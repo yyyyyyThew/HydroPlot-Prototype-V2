@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using Prototype_V2;
 
-namespace FormsPrototype
+namespace PrototypeV2
 {
 	class Excel
 	{
@@ -40,15 +39,18 @@ namespace FormsPrototype
 				{
 					SheetPicker Select = new SheetPicker(Sheets);
 					Select.ShowDialog();
-					if (Select.PickedSheet != "" && Select.DialogResult == DialogResult.OK)
+					pickedSheet = Select.PickedSheet;
+					if (pickedSheet == "")
 					{
-						pickedSheet = Select.PickedSheet;
+						//pickedSheet = Select.PickedSheet;
+						throw new Exception("aaaaahhhhh");
 					}
 				}
 				else
 				{
 					pickedSheet = Sheets[0];
 				}
+				MessageBox.Show(pickedSheet);
 				sheet = book.GetSheet(pickedSheet);
 				//sheet1 is the default first page in a workbook, add the option to change this later
 			}

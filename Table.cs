@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MathNet.Numerics.Interpolation;
 using NPOI;
-using Prototype_V2;
 
-namespace FormsPrototype
+namespace PrototypeV2
 {
 	class Table
 	{
