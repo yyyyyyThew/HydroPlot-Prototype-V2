@@ -11,7 +11,7 @@ namespace PrototypeV2
 		public double X { get; set; }
 		public double Y { get; set; }
 		// ALWAYS USE LABELS WHEN YOU CALL THIS PRETTY PLEASE
-		public Coordinate(double x, double y, double frequency = 1)
+		public Coordinate(double x, double y)
 		{
 			X = x;
 			Y = y;

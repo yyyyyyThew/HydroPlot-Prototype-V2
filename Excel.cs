@@ -26,6 +26,7 @@ namespace PrototypeV2
 		{
 			bool readyCheck = false;
 			string pickedSheet = "sheet1";
+			//if no sheet is picked, it uses the default name for a sheet in an excel workbook
 			BookPath = path;
 			//IWorkbook book;
 			try
