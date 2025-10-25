@@ -1,0 +1,35 @@
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype V2.csproj.AssemblyReference.cache
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype_V2.Home.resources
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype_V2.GraphView.resources
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype V2.csproj.GenerateResource.cache
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype V2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype V2.AssemblyInfoInputs.cache
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype V2.AssemblyInfo.cs
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype V2.csproj.CoreCompileInputs.cache
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype V2.sourcelink.json
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\Prototype V2.exe
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\Prototype V2.deps.json
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\Prototype V2.runtimeconfig.json
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\Prototype V2.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\Prototype V2.pdb
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\BouncyCastle.Cryptography.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\Enums.NET.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\ExtendedNumerics.BigDecimal.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\MathNet.Numerics.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\NPOI.Core.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\NPOI.OOXML.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\NPOI.OpenXml4Net.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\NPOI.OpenXmlFormats.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\ICSharpCode.SharpZipLib.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\SixLabors.Fonts.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\SixLabors.ImageSharp.dll
+C:\Users\Matthew\source\repos\Prototype V2\bin\Debug\net9.0-windows\ZString.dll
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\PrototypeV2.Home.resources
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\PrototypeV2.SheetPicker.resources
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototyp.32AA1D62.Up2Date
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype V2.dll
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\refint\Prototype V2.dll
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype V2.pdb
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\Prototype V2.genruntimeconfig.cache
+C:\Users\Matthew\source\repos\Prototype V2\obj\Debug\net9.0-windows\ref\Prototype V2.dll

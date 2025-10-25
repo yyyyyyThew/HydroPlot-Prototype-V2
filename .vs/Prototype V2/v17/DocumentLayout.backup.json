@@ -1,0 +1,149 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|c:\\users\\matthew\\source\\repos\\prototype v2\\spreadsheet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|solutionrelative:spreadsheet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|c:\\users\\matthew\\source\\repos\\prototype v2\\home.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|solutionrelative:home.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|c:\\users\\matthew\\source\\repos\\prototype v2\\coordinate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|solutionrelative:coordinate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|c:\\users\\matthew\\source\\repos\\prototype v2\\excel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|solutionrelative:excel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|c:\\users\\matthew\\source\\repos\\prototype v2\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|solutionrelative:readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|C:\\Users\\Matthew\\source\\repos\\Prototype V2\\home.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{556DE625-603F-483C-ABD1-45F18EDC27CF}|Prototype V2.csproj|solutionrelative:home.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 107,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Spreadsheet.cs",
+              "DocumentMoniker": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\Spreadsheet.cs",
+              "RelativeDocumentMoniker": "Spreadsheet.cs",
+              "ToolTip": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\Spreadsheet.cs*",
+              "RelativeToolTip": "Spreadsheet.cs*",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAwwCgAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-25T14:48:00.281Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Excel.cs",
+              "DocumentMoniker": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\Excel.cs",
+              "RelativeDocumentMoniker": "Excel.cs",
+              "ToolTip": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\Excel.cs",
+              "RelativeToolTip": "Excel.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAAwDAAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T17:06:12.729Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Home.cs",
+              "DocumentMoniker": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\Home.cs",
+              "RelativeDocumentMoniker": "Home.cs",
+              "ToolTip": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\Home.cs",
+              "RelativeToolTip": "Home.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAI4AAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T21:31:38.819Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Coordinate.cs",
+              "DocumentMoniker": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\Coordinate.cs",
+              "RelativeDocumentMoniker": "Coordinate.cs",
+              "ToolTip": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\Coordinate.cs",
+              "RelativeToolTip": "Coordinate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T21:30:26.655Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ReadMe.md",
+              "DocumentMoniker": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\ReadMe.md",
+              "RelativeDocumentMoniker": "ReadMe.md",
+              "ToolTip": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\ReadMe.md",
+              "RelativeToolTip": "ReadMe.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-09-08T16:40:19.408Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Home.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\Home.cs",
+              "RelativeDocumentMoniker": "Home.cs",
+              "ToolTip": "C:\\Users\\Matthew\\source\\repos\\Prototype V2\\Home.cs [Design]",
+              "RelativeToolTip": "Home.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-26T20:22:34.529Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
