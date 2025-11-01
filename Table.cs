@@ -26,11 +26,11 @@ namespace PrototypeV2
 			double Gradient = 0;
 			double a = 0;
 			double b = 0;
-			double sumOfX = 0;
-			double sumOfY = 0;
-			double sumOfXSq = 0;
-			double sumOfYSq = 0;
-			double coDeviateSum = 0;
+			double SumX = 0;
+			double SumY = 0;
+			double SumXSquared = 0;
+			double SumYSquared = 0;
+			double CoDeviateSum = 0;
 			double rsquared;
 			double YIntercept;
 			//calculate line of best fit
@@ -40,22 +40,22 @@ namespace PrototypeV2
 			{
 				var x = Data[i].X;
 				var y = Data[i].Y;
-				coDeviateSum += x * y;
-				sumOfX += x;
-				sumOfY += y;
-				sumOfXSq += x * x;
-				sumOfYSq += y * y;
+				CoDeviateSum += x * y;
+				SumX += x;
+				SumY += y;
+				SumXSquared += x * x;
+				SumYSquared += y * y;
 			}
 			int count = Data.Count;
-			double ssX = sumOfXSq - ((sumOfX * sumOfX) / count);
-			double ssY = sumOfYSq - ((sumOfY * sumOfY) / count);
+			double ssX = SumXSquared - ((SumX * SumX) / count);
+			double ssY = SumYSquared - ((SumY * SumY) / count);
 
-			double rNumerator = (count * coDeviateSum) - (sumOfX * sumOfY);
-			double rDenominator = (count * sumOfXSq - (sumOfX * sumOfX)) * (count * sumOfYSq - (sumOfY * sumOfY));
-			double sCo = coDeviateSum - ((sumOfX * sumOfY) / count);
+			double rNumerator = (count * CoDeviateSum) - (SumX * SumY);
+			double rDenominator = (count * SumXSquared - (SumX * SumX)) * (count * SumYSquared - (SumY * SumY));
+			double sCo = CoDeviateSum - ((SumX * SumY) / count);
 
-			double meanX = sumOfX / count;
-			double meanY = sumOfY / count;
+			double meanX = SumX / count;
+			double meanY = SumY / count;
 			double r = rNumerator / Math.Sqrt(rDenominator);
 
 			rsquared = r * r;
