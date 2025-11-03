@@ -69,23 +69,29 @@ namespace Prototype_V2
 			v[0] = y;
 			v[1] = z;
 		}
-		public string ToString(uint In)
+		public string ToString(uint[] Unsigned)
 		{
-			System.Text.StringBuilder output = new System.Text.StringBuilder();
-			output.Append((char)((In & 0xFF)));
-			output.Append((char)((In >> 8) & 0xFF));
-			output.Append((char)((In >> 16) & 0xFF));
-			output.Append((char)((In >> 24) & 0xFF));
-			return output.ToString();
+			string Result = "";
+			for (int i = 0; i < Unsigned.Length; i++)
+			{
+				Result = Result + Convert.ToChar(Unsigned[i]);
+			}
+			return Source;
 		}
-		public uint FromString(string In)
+		public uint[] FromString(string Source)
 		{
-			uint output;
-			output = ((uint)In[0]);
-			output += ((uint)In[1] << 8);
-			output += ((uint)In[2] << 16);
-			output += ((uint)In[3] << 24);
-			return output;
+			Encoding ascii = Encoding.ASCII;
+			byte[] bytes = ascii.GetBytes(Source);
+
+			// Initialize the array with the correct size
+			uint[] Unsigned = new uint[bytes.Length];
+
+			// Convert each byte to a uint and store it in the array
+			for (int i = 0; i < bytes.Length; i++)
+			{
+				Unsigned[i] = Convert.ToUInt32(bytes[i]);
+			}
+			return Unsigned;
 		}
 	}
 }
