@@ -1,4 +1,3 @@
-using System.Windows.Forms;
 using System.Threading;
 
 namespace PrototypeV2
@@ -65,7 +64,6 @@ namespace PrototypeV2
 
 
 		}
-
 		private void pictureBox1_Click(object sender, EventArgs e)
 		{
 			goPaint = true;
@@ -154,12 +152,8 @@ namespace PrototypeV2
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show(ex.Message);
+
 				}
-			}
-			//(old) for some reason this always returns 0 for vars that should have different data
-			//(old)sometimes values for A and YIntercept are NaN for some reason
-			//MessageBox.Show(Convert.ToString(BestFit.Print()));
 
 			//time to paint oh yeahhhh
 			Graphics g = pictureBox1.CreateGraphics();

@@ -29,7 +29,6 @@
 		private void InitializeComponent()
 		{
 			components = new System.ComponentModel.Container();
-			pictureBox1 = new PictureBox();
 			BtnSort = new Button();
 			BtnFile = new Button();
 			BtnCreate = new Button();
@@ -42,17 +41,6 @@
 			((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
 			((System.ComponentModel.ISupportInitialize)DgvCurrentData).BeginInit();
 			SuspendLayout();
-			// 
-			// pictureBox1
-			// 
-			pictureBox1.Location = new Point(308, 64);
-			pictureBox1.Name = "pictureBox1";
-			pictureBox1.Size = new Size(480, 360);
-			pictureBox1.TabIndex = 0;
-			pictureBox1.TabStop = false;
-			pictureBox1.Click += pictureBox1_Click;
-			pictureBox1.Paint += pictureBox1_Paint;
-			pictureBox1.DoubleClick += pictureBox1_DoubleClick;
 			// 
 			// BtnSort
 			// 
@@ -129,11 +117,30 @@
 			DgvCurrentData.Size = new Size(286, 360);
 			DgvCurrentData.TabIndex = 7;
 			// 
+			// pltHome
+			// 
+			pltHome.DisplayScale = 1.25F;
+			pltHome.Location = new Point(304, 64);
+			pltHome.Name = "pltHome";
+			pltHome.Size = new Size(484, 328);
+			pltHome.TabIndex = 8;
+			pltHome.Load += pltHome_Load;
+			// 
+			// textBox1
+			// 
+			//textBox1.Location = new Point(579, 398);
+			//textBox1.Name = "textBox1";
+			//textBox1.Size = new Size(194, 27);
+			//textBox1.TabIndex = 9;
+			//textBox1.TextChanged += textBox1_TextChanged;
+			// 
 			// Home
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 450);
+			//Controls.Add(textBox1);
+			Controls.Add(pltHome);
 			Controls.Add(DgvCurrentData);
 			Controls.Add(BtnView);
 			Controls.Add(BtnPrint);
@@ -141,26 +148,25 @@
 			Controls.Add(BtnCreate);
 			Controls.Add(BtnFile);
 			Controls.Add(BtnSort);
-			Controls.Add(pictureBox1);
 			Name = "Home";
 			Text = "Home";
 			Load += Home_Load;
-			((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
 			((System.ComponentModel.ISupportInitialize)DgvCurrentData).EndInit();
 			ResumeLayout(false);
+			PerformLayout();
 		}
 
 		#endregion
-
-		private PictureBox pictureBox1;
 		private Button BtnSort;
 		private Button BtnFile;
 		private Button BtnCreate;
 		private Button BtnRegress;
-		private OpenFileDialog FpkExcel;
+		private OpenFileDialog AFpkExcel;
 		private Button BtnPrint;
 		private Button BtnView;
 		private DataGridView DgvCurrentData;
 		private ToolTip TtiOpen;
+		private ScottPlot.WinForms.FormsPlot pltHome;
+		//private TextBox textBox1;
 	}
 }
