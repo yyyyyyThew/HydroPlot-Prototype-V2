@@ -38,7 +38,8 @@
 			BtnView = new Button();
 			DgvCurrentData = new DataGridView();
 			TtiOpen = new ToolTip(components);
-			((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+			pltHome = new ScottPlot.WinForms.FormsPlot();
+			//textBox1 = new TextBox();
 			((System.ComponentModel.ISupportInitialize)DgvCurrentData).BeginInit();
 			SuspendLayout();
 			// 
@@ -161,7 +162,7 @@
 		private Button BtnFile;
 		private Button BtnCreate;
 		private Button BtnRegress;
-		private OpenFileDialog AFpkExcel;
+		private OpenFileDialog FpkExcel;
 		private Button BtnPrint;
 		private Button BtnView;
 		private DataGridView DgvCurrentData;

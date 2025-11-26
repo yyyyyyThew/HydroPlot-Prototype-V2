@@ -1,3 +1,6 @@
+using System.Data.SqlTypes;
+using System.Text.RegularExpressions;
+
 namespace PrototypeV2
 {
     internal static class Program

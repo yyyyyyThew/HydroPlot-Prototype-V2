@@ -64,8 +64,8 @@ namespace PrototypeV2
 			//if less than ~95, call LogLinear()
 			if (rsquared > 0.5)
 			{
-				LinearLine BestFit = new LinearLine(Gradient, YIntercept);
-				return BestFit.Equation;
+				LinearBestFit = new LinearLine(Gradient, YIntercept);
+				return LinearBestFit.Equation;
 			}
 			else
 			{
@@ -78,13 +78,13 @@ namespace PrototypeV2
 			// Logarithmic Regression
 			double sumLogX = 0, sumLogXSq = 0, sumLogXY = 0;
 			double sumY = 0;
-			int count = Data.Count;
+			int count = DataIn.Count;
 
-			foreach (var point in Data)
+			foreach (Coordinate point in DataIn)
 			{
-				var x = point.X;
-				var y = point.Y;
-				var logX = Math.Log(x);  // Taking the logarithm of x
+				double x = point.X;
+				double y = point.Y;
+				double logX = Math.Log(x);  // Taking the logarithm of x
 
 				sumLogX += logX;
 				sumLogXSq += logX * logX;
@@ -97,8 +97,9 @@ namespace PrototypeV2
 			double a = aNumerator / aDenominator;
 
 			double b = (sumY - a * sumLogX) / count;  // Intercept
-			LogLine BestFit = new LogLine(a, b);
-			return BestFit.Equation;
+			
+			LogBestFit = new LogLine(a, b);
+			return LogBestFit.Equation;
 		}
 		public List<Coordinate> LogLinear()
 		{

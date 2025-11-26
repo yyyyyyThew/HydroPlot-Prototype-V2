@@ -51,7 +51,7 @@ namespace PrototypeV2
 				{
 					pickedSheet = Sheets[0];
 				}
-				MessageBox.Show(pickedSheet);
+				//MessageBox.Show(pickedSheet);
 				sheet = book.GetSheet(pickedSheet);
 				//sheet1 is the default first page in a workbook, add the option to change this later
 			}
