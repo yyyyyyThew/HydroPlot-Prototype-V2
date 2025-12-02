@@ -34,18 +34,18 @@
 			BtnCreate = new Button();
 			BtnRegress = new Button();
 			FpkExcel = new OpenFileDialog();
-			BtnPrint = new Button();
 			BtnView = new Button();
 			DgvCurrentData = new DataGridView();
 			TtiOpen = new ToolTip(components);
 			pltHome = new ScottPlot.WinForms.FormsPlot();
-			//textBox1 = new TextBox();
+			btnLogIn = new Button();
+			BtnPrint = new Button();
 			((System.ComponentModel.ISupportInitialize)DgvCurrentData).BeginInit();
 			SuspendLayout();
 			// 
 			// BtnSort
 			// 
-			BtnSort.Location = new Point(504, 12);
+			BtnSort.Location = new Point(404, 12);
 			BtnSort.Name = "BtnSort";
 			BtnSort.Size = new Size(94, 29);
 			BtnSort.TabIndex = 1;
@@ -89,15 +89,6 @@
 			FpkExcel.ShowPinnedPlaces = false;
 			FpkExcel.FileOk += FpkExcel_FileOk;
 			// 
-			// BtnPrint
-			// 
-			BtnPrint.Location = new Point(404, 12);
-			BtnPrint.Name = "BtnPrint";
-			BtnPrint.Size = new Size(94, 29);
-			BtnPrint.TabIndex = 5;
-			BtnPrint.Text = "Print";
-			BtnPrint.UseVisualStyleBackColor = true;
-			// 
 			// BtnView
 			// 
 			BtnView.Location = new Point(304, 12);
@@ -127,24 +118,36 @@
 			pltHome.TabIndex = 8;
 			pltHome.Load += pltHome_Load;
 			// 
-			// textBox1
+			// btnLogIn
 			// 
-			//textBox1.Location = new Point(579, 398);
-			//textBox1.Name = "textBox1";
-			//textBox1.Size = new Size(194, 27);
-			//textBox1.TabIndex = 9;
-			//textBox1.TextChanged += textBox1_TextChanged;
+			btnLogIn.Location = new Point(582, 12);
+			btnLogIn.Name = "btnLogIn";
+			btnLogIn.Size = new Size(94, 29);
+			btnLogIn.TabIndex = 9;
+			btnLogIn.Text = "Log In";
+			btnLogIn.UseVisualStyleBackColor = true;
+			btnLogIn.Click += btnLogIn_Click;
+			// 
+			// BtnPrint
+			// 
+			BtnPrint.Location = new Point(404, 47);
+			BtnPrint.Name = "BtnPrint";
+			BtnPrint.Size = new Size(94, 29);
+			BtnPrint.TabIndex = 10;
+			BtnPrint.Text = "Print";
+			BtnPrint.UseVisualStyleBackColor = true;
+			BtnPrint.Click += btnPrint_Click;
 			// 
 			// Home
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 450);
-			//Controls.Add(textBox1);
+			Controls.Add(BtnPrint);
+			Controls.Add(btnLogIn);
 			Controls.Add(pltHome);
 			Controls.Add(DgvCurrentData);
 			Controls.Add(BtnView);
-			Controls.Add(BtnPrint);
 			Controls.Add(BtnRegress);
 			Controls.Add(BtnCreate);
 			Controls.Add(BtnFile);
@@ -154,7 +157,6 @@
 			Load += Home_Load;
 			((System.ComponentModel.ISupportInitialize)DgvCurrentData).EndInit();
 			ResumeLayout(false);
-			PerformLayout();
 		}
 
 		#endregion
@@ -163,11 +165,12 @@
 		private Button BtnCreate;
 		private Button BtnRegress;
 		private OpenFileDialog FpkExcel;
-		private Button BtnPrint;
 		private Button BtnView;
 		private DataGridView DgvCurrentData;
 		private ToolTip TtiOpen;
 		private ScottPlot.WinForms.FormsPlot pltHome;
+		private Button btnLogIn;
+		private Button BtnPrint;
 		//private TextBox textBox1;
 	}
 }

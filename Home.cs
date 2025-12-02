@@ -1,7 +1,15 @@
+using System;
 using System.Threading;
 using System.Windows.Forms;
+using MathNet.Numerics;
+using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic.ApplicationServices;
+using NPOI.SS.Formula.Functions;
 using NPOI.SS.Formula.PTG;
+using Org.BouncyCastle.Tls;
+using Prototype_V2;
 using ScottPlot;
+
 
 namespace PrototypeV2
 {
@@ -22,6 +30,10 @@ namespace PrototypeV2
 		private bool goPaint = false;
 		private void CustomComponents()
 		{
+			Connect();
+			//send the start timestamp to the database
+
+
 			//set the filter for the file pick dialogue
 			//description of filter goes in the brackets
 			//after the pipe goes the actual file extensions, followed by a semi colon.
@@ -125,6 +137,43 @@ namespace PrototypeV2
 			}
 			return new double[] { 0, 0, 0, 0 };
 		}
+		private void Connect()
+		{
+			string str;
+			SqlConnection myConn = new SqlConnection(@"Server=(localdb)\testDB;Integrated security=SSPI;database=master");
+			str = File.ReadAllText("createDB.sql");
+
+			SqlCommand createDB = new SqlCommand(str, myConn);
+
+			try
+			{
+				myConn.Open();
+				createDB.ExecuteNonQuery();
+				MessageBox.Show("DDL has been run", "SystemTrackerDB");
+
+				//switching to new/existing database
+				SqlCommand useDB = new SqlCommand("USE SystemTrackerDB", myConn);
+				useDB.ExecuteNonQuery();
+				MessageBox.Show("Successfully switched to SystemTrackerDB", "SystemTrackerDB");
+			}
+			catch (SqlException ex)
+			{
+				// Handle specific exception if the database already exists
+				if (ex.Message.Contains("database already exists"))
+				{
+					MessageBox.Show("Database already exists, proceeding with the operation.", "SystemTrackerDB");
+				}
+				else
+				{
+					// Show other error messages
+					MessageBox.Show("Error: " + ex.Message, "Error");
+				}
+			}
+			finally
+			{
+				myConn.Close();
+			}
+		}
 		private void pictureBox1_Click(object sender, EventArgs e)
 		{
 			goPaint = true;
@@ -147,25 +196,32 @@ namespace PrototypeV2
 
 		private void BtnFile_Click(object sender, EventArgs e)
 		{
+			string FilePath;
 			//MessageBox.Show("ok");
 			if (FpkExcel.ShowDialog() == DialogResult.OK)
 			{
 				MessageBox.Show(FpkExcel.FileName, "Input File");
-			FilePath = FpkExcel.FileName;
-			CurrentData = new Excel(FilePath);
-			CurrentData.ReadWorkbook();
-			//MessageBox.Show(Convert.ToString(CurrentData.DataOut[0].X), "Data in 1st row, 1st column");
-			DgvCurrentData.ColumnCount = 2;
-			DgvCurrentData.Rows.Add(CurrentData.xtitle, CurrentData.ytitle);
-			for (int items = 0; items < CurrentData.DataOut.Count(); items++)
-			{
-				DgvCurrentData.Rows.Add(CurrentData.LocalColumn.Data[items].X, CurrentData.LocalColumn.Data[items].Y);
+				FilePath = FpkExcel.FileName;
+				CurrentData = new Excel(FilePath);
+				CurrentData.ReadWorkbook();
+				//MessageBox.Show(Convert.ToString(CurrentData.DataOut[0].X), "Data in 1st row, 1st column");
+				DgvCurrentData.ColumnCount = 2;
+				DgvCurrentData.Rows.Add(CurrentData.xtitle, CurrentData.ytitle);
+				for (int items = 0; items < CurrentData.DataOut.Count(); items++)
+				{
+					DgvCurrentData.Rows.Add(CurrentData.LocalColumn.Data[items].X, CurrentData.LocalColumn.Data[items].Y);
+				}
+				DgvCurrentData.Refresh();
+				BtnRegress.Enabled = true;
+				BtnSort.Enabled = true;
+				BtnPrint.Enabled = true;
+				BtnView.Enabled = true;
 			}
-			DgvCurrentData.Refresh();
-			BtnRegress.Enabled = true;
-			BtnSort.Enabled = true;
-			BtnPrint.Enabled = true;
-			BtnView.Enabled = true;
+			else
+			{
+				MessageBox.Show("No file selected", "Input File");
+			}
+
 		}
 
 		private void FpkExcel_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
@@ -265,6 +321,14 @@ namespace PrototypeV2
 			//pltHome_Paint();
 		}
 
+		private void btnLogIn_Click(object sender, EventArgs e)
+		{
+			new LoginScreen().Show();
+		}
 
+		private void btnPrint_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }
