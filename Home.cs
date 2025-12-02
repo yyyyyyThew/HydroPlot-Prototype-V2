@@ -7,9 +7,6 @@ namespace PrototypeV2
 {
 	public partial class Home : Form
 	{
-		string FilePath;
-		double Gradient;
-		double YIntercept;
 		//will eventually be fed into the Excel() constructor as the file path
 		Excel CurrentData;
 		Line BestFit;
@@ -154,7 +151,6 @@ namespace PrototypeV2
 			if (FpkExcel.ShowDialog() == DialogResult.OK)
 			{
 				MessageBox.Show(FpkExcel.FileName, "Input File");
-			}
 			FilePath = FpkExcel.FileName;
 			CurrentData = new Excel(FilePath);
 			CurrentData.ReadWorkbook();
