@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using ScottPlot;
 
 namespace PrototypeV2
 {
@@ -58,6 +59,8 @@ namespace PrototypeV2
 			catch (Exception)
 			{
 				MessageBox.Show("Can't open book", "Error");
+				//make the code return to the main section!
+				new Home();
 			}
 		}
 		public void ReadWorkbook()

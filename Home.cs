@@ -1,12 +1,4 @@
-using System;
-using System.Threading;
-using System.Windows.Forms;
-using MathNet.Numerics;
 using Microsoft.Data.SqlClient;
-using Microsoft.VisualBasic.ApplicationServices;
-using NPOI.SS.Formula.Functions;
-using NPOI.SS.Formula.PTG;
-using Org.BouncyCastle.Tls;
 using Prototype_V2;
 using ScottPlot;
 
@@ -18,8 +10,11 @@ namespace PrototypeV2
 		//will eventually be fed into the Excel() constructor as the file path
 		Excel CurrentData;
 		Line BestFit;
+		private bool ConnectPoints;
 		public Home()
 		{
+			ConnectPoints = false;
+			goPaint = false;
 			InitializeComponent();
 			CustomComponents();
 		}
@@ -27,7 +22,7 @@ namespace PrototypeV2
 		//private Pen redPen = new Pen(Color.FromArgb(255, 255, 0, 0));
 
 		// Class-level declarations for the pens used
-		private bool goPaint = false;
+		private bool goPaint;
 		private void CustomComponents()
 		{
 			Connect();
@@ -45,6 +40,7 @@ namespace PrototypeV2
 			BtnSort.Enabled = false;
 			BtnPrint.Enabled = false;
 			BtnView.Enabled = false;
+			chk_ConnectPoints.Enabled = false;
 			// Subscribe to the Paint event
 			//this.Paint += Home_Paint;
 
@@ -196,30 +192,38 @@ namespace PrototypeV2
 
 		private void BtnFile_Click(object sender, EventArgs e)
 		{
-			string FilePath;
-			//MessageBox.Show("ok");
-			if (FpkExcel.ShowDialog() == DialogResult.OK)
+			try
 			{
-				MessageBox.Show(FpkExcel.FileName, "Input File");
-				FilePath = FpkExcel.FileName;
-				CurrentData = new Excel(FilePath);
-				CurrentData.ReadWorkbook();
-				//MessageBox.Show(Convert.ToString(CurrentData.DataOut[0].X), "Data in 1st row, 1st column");
-				DgvCurrentData.ColumnCount = 2;
-				DgvCurrentData.Rows.Add(CurrentData.xtitle, CurrentData.ytitle);
-				for (int items = 0; items < CurrentData.DataOut.Count(); items++)
+				string FilePath;
+				//MessageBox.Show("ok");
+				if (FpkExcel.ShowDialog() == DialogResult.OK)
 				{
-					DgvCurrentData.Rows.Add(CurrentData.LocalColumn.Data[items].X, CurrentData.LocalColumn.Data[items].Y);
+					MessageBox.Show(FpkExcel.FileName, "Input File");
+					FilePath = FpkExcel.FileName;
+					CurrentData = new Excel(FilePath);
+					CurrentData.ReadWorkbook();
+					//MessageBox.Show(Convert.ToString(CurrentData.DataOut[0].X), "Data in 1st row, 1st column");
+					DgvCurrentData.ColumnCount = 2;
+					DgvCurrentData.Rows.Add(CurrentData.xtitle, CurrentData.ytitle);
+					for (int items = 0; items < CurrentData.DataOut.Count(); items++)
+					{
+						DgvCurrentData.Rows.Add(CurrentData.LocalColumn.Data[items].X, CurrentData.LocalColumn.Data[items].Y);
+					}
+					DgvCurrentData.Refresh();
+					BtnRegress.Enabled = true;
+					BtnSort.Enabled = true;
+					BtnPrint.Enabled = true;
+					BtnView.Enabled = true;
+					chk_ConnectPoints.Enabled = true;
 				}
-				DgvCurrentData.Refresh();
-				BtnRegress.Enabled = true;
-				BtnSort.Enabled = true;
-				BtnPrint.Enabled = true;
-				BtnView.Enabled = true;
+				else
+				{
+					MessageBox.Show("No file selected", "Input File");
+				}
 			}
-			else
+			catch (Exception ex)
 			{
-				MessageBox.Show("No file selected", "Input File");
+				MessageBox.Show("Input document not in correct format", "error");
 			}
 
 		}
@@ -306,8 +310,16 @@ namespace PrototypeV2
 			double[] points = toCoordinate(alpha, dataX, dataY);
 			Coordinates pt1 = new Coordinates(points[0], points[1]);
 			Coordinates pt2 = new Coordinates(points[2], points[3]);
-			pltHome.Plot.Add.Scatter(dataX, dataY);
 			var line = pltHome.Plot.Add.Line(pt1, pt2);
+
+			if (ConnectPoints == true)
+			{
+				pltHome.Plot.Add.Scatter(dataX, dataY);
+			}
+			else
+			{
+				pltHome.Plot.Add.ScatterPoints(dataX, dataY);
+			}
 			pltHome.Plot.Axes.AutoScale();
 			pltHome.Refresh();
 		}
@@ -329,6 +341,14 @@ namespace PrototypeV2
 		private void btnPrint_Click(object sender, EventArgs e)
 		{
 
+		}
+
+		private void chk_ConnectPoints_CheckedChanged(object sender, EventArgs e)
+		{
+			if (ConnectPoints == false)
+				ConnectPoints = true;
+			else
+				ConnectPoints = false;
 		}
 	}
 }
