@@ -36,28 +36,31 @@
 			// 
 			// txtUserID
 			// 
-			txtUserID.Location = new Point(303, 178);
+			txtUserID.Location = new Point(379, 222);
+			txtUserID.Margin = new Padding(4, 4, 4, 4);
 			txtUserID.Name = "txtUserID";
 			txtUserID.PlaceholderText = "User Name";
-			txtUserID.Size = new Size(194, 27);
+			txtUserID.Size = new Size(242, 31);
 			txtUserID.TabIndex = 7;
 			txtUserID.TextChanged += txtUserID_TextChanged;
 			// 
 			// txtPassword
 			// 
-			txtPassword.Location = new Point(303, 211);
+			txtPassword.Location = new Point(379, 264);
+			txtPassword.Margin = new Padding(4, 4, 4, 4);
 			txtPassword.Name = "txtPassword";
 			txtPassword.PasswordChar = '*';
 			txtPassword.PlaceholderText = "Password";
-			txtPassword.Size = new Size(194, 27);
+			txtPassword.Size = new Size(242, 31);
 			txtPassword.TabIndex = 6;
 			txtPassword.TextChanged += txtPassword_TextChanged;
 			// 
 			// btnCancel
 			// 
-			btnCancel.Location = new Point(403, 244);
+			btnCancel.Location = new Point(504, 305);
+			btnCancel.Margin = new Padding(4, 4, 4, 4);
 			btnCancel.Name = "btnCancel";
-			btnCancel.Size = new Size(94, 29);
+			btnCancel.Size = new Size(118, 36);
 			btnCancel.TabIndex = 5;
 			btnCancel.Text = "Cancel";
 			btnCancel.UseVisualStyleBackColor = true;
@@ -65,9 +68,10 @@
 			// 
 			// btnLogin
 			// 
-			btnLogin.Location = new Point(303, 244);
+			btnLogin.Location = new Point(379, 305);
+			btnLogin.Margin = new Padding(4, 4, 4, 4);
 			btnLogin.Name = "btnLogin";
-			btnLogin.Size = new Size(94, 29);
+			btnLogin.Size = new Size(118, 36);
 			btnLogin.TabIndex = 4;
 			btnLogin.Text = "Enter";
 			btnLogin.UseVisualStyleBackColor = true;
@@ -75,15 +79,17 @@
 			// 
 			// LoginScreen
 			// 
-			AutoScaleDimensions = new SizeF(8F, 20F);
+			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(800, 450);
+			ClientSize = new Size(1000, 562);
 			Controls.Add(txtUserID);
 			Controls.Add(txtPassword);
 			Controls.Add(btnCancel);
 			Controls.Add(btnLogin);
+			Margin = new Padding(4, 4, 4, 4);
 			Name = "LoginScreen";
 			Text = "LoginScreen";
+			Load += LoginScreen_Load;
 			ResumeLayout(false);
 			PerformLayout();
 		}

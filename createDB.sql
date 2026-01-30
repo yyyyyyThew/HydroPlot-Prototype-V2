@@ -35,6 +35,8 @@ BEGIN
         session_id INT PRIMARY KEY IDENTITY,
         session_timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         runtime INT NOT NULL,
+		user_id INT,
+		device_id INT,
         CONSTRAINT fk_sessions_user FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE SET NULL ON UPDATE CASCADE,
         CONSTRAINT fk_sessions_device FOREIGN KEY (device_id) REFERENCES Devices(device_id) ON DELETE SET NULL ON UPDATE CASCADE
     );
@@ -48,6 +50,7 @@ BEGIN
         file_path VARCHAR(255) NOT NULL,
         modified_date DATETIME NOT NULL,
         size INT NOT NULL,
+		session_id INT,
         CONSTRAINT fk_files_session FOREIGN KEY (session_id) REFERENCES Sessions(session_id) ON DELETE SET NULL ON UPDATE CASCADE
     );
 END

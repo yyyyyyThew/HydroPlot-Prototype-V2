@@ -29,7 +29,7 @@ namespace PrototypeV2
 		private bool goPaint;
 		private void CustomComponents()
 		{
-			Connect();
+			Connect(@"A240392\SQLEXPRESS");
 			//send the start timestamp to the database
 
 
@@ -167,6 +167,57 @@ namespace PrototypeV2
 				else if (ex.Message.Contains("Database 'SystemTrackerDB' does not exist"))
 				{
 					MessageBox.Show("Cannot open database, running offline", "Error");
+				}
+				else
+				{
+					// Show other error messages
+					MessageBox.Show("Error: " + ex.Message, "Error");
+				}
+			}
+			finally
+			{
+				myConn.Close();
+			}
+		}
+		static private void Connect(string path)
+		{
+			string str;
+			string testpath = @"(localDB)\testDB";
+			string finalpath = @"A240392\SQLEXPRESS";
+			//eventually pull from XML settings to find this
+			//SqlConnection myConn = new SqlConnection($@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;");
+			SqlConnection myConn = new SqlConnection($@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;");
+			try
+			{
+				myConn.Open();
+				str = File.ReadAllText("createDB.sql");
+				SqlCommand RunDDL = new SqlCommand(str, myConn);
+				SqlCommand useDB = new SqlCommand("USE SystemTrackerDB", myConn);
+				RunDDL.ExecuteNonQuery();
+				useDB.ExecuteNonQuery();
+				MessageBox.Show("Database Connnection Established");
+
+			}
+			catch (SqlException ex)
+			{
+				// Handle specific exception if the database already exists
+				if (ex.Message.Contains("database already exists"))
+				{
+					SqlCommand useDB = new SqlCommand("USE SystemTrackerDB", myConn);
+					useDB.ExecuteNonQuery();
+					MessageBox.Show("Database already exists, connecting...", "SystemTrackerDB");
+				}
+				else if (ex.Message.Contains("Database 'SystemTrackerDB' does not exist"))
+				{
+					str = File.ReadAllText("createDB.sql");
+					SqlCommand createDB = new SqlCommand("CREATE DATABASE SystemTrackerDB;", myConn);
+					SqlCommand RunDDL = new SqlCommand(str, myConn);
+					createDB.ExecuteNonQuery();
+					RunDDL.ExecuteNonQuery();
+					//SqlCommand useDB = new SqlCommand("USE SystemTrackerDB", myConn);
+					//useDB.ExecuteNonQuery();
+					MessageBox.Show("Creating DB");
+					Connect(path);
 				}
 				else
 				{
