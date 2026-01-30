@@ -103,6 +103,7 @@
 			BtnView.TabIndex = 6;
 			BtnView.Text = "View";
 			BtnView.UseVisualStyleBackColor = true;
+			BtnView.Click += BtnView_Click;
 			// 
 			// DgvCurrentData
 			// 

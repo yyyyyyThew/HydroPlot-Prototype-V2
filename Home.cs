@@ -9,10 +9,14 @@ namespace PrototypeV2
 	{
 		//will eventually be fed into the Excel() constructor as the file path
 		Excel CurrentData;
-		Line BestFit;
+		//Line BestFit;
+		double[] x, y;
+		string a;
 		private bool ConnectPoints;
+		private bool RunningChart;
 		public Home()
 		{
+			RunningChart = false;
 			ConnectPoints = false;
 			goPaint = false;
 			InitializeComponent();
@@ -76,13 +80,11 @@ namespace PrototypeV2
 
 		//}
 
-		double[] toCoordinate(string alpha, double[] dataX, double[] dataY)
+		static public double[] toCoordinate(string alpha, double[] dataX, double[] dataY)
 		{
 			Coordinate max;
 			Coordinate min;
 			string subString;
-
-
 			int eqIndex = alpha.IndexOf('=');//index where '=' appears
 			int multIndex = alpha.IndexOf('x');//and 'x'
 			double m;
@@ -133,10 +135,14 @@ namespace PrototypeV2
 			}
 			return new double[] { 0, 0, 0, 0 };
 		}
+
 		private void Connect()
 		{
 			string str;
-			SqlConnection myConn = new SqlConnection(@"Server=(localdb)\testDB;Integrated security=SSPI;database=master");
+			//string testpath = @"(localDB)\testDB";
+			string finalpath = @"A240392\SQLEXPRESS";
+			//eventually pull from XML settings to find this
+			SqlConnection myConn = new SqlConnection($@"Server={finalpath};Database=master;TrustServerCertificate=True;Trusted_Connection=True;");
 			str = File.ReadAllText("createDB.sql");
 
 			SqlCommand createDB = new SqlCommand(str, myConn);
@@ -146,7 +152,6 @@ namespace PrototypeV2
 				myConn.Open();
 				createDB.ExecuteNonQuery();
 				MessageBox.Show("DDL has been run", "SystemTrackerDB");
-
 				//switching to new/existing database
 				SqlCommand useDB = new SqlCommand("USE SystemTrackerDB", myConn);
 				useDB.ExecuteNonQuery();
@@ -158,6 +163,10 @@ namespace PrototypeV2
 				if (ex.Message.Contains("database already exists"))
 				{
 					MessageBox.Show("Database already exists, proceeding with the operation.", "SystemTrackerDB");
+				}
+				else if (ex.Message.Contains("Database 'SystemTrackerDB' does not exist"))
+				{
+					MessageBox.Show("Cannot open database, running offline", "Error");
 				}
 				else
 				{
@@ -271,7 +280,7 @@ namespace PrototypeV2
 			//(old) for some reason this always returns 0 for vars that should have different data
 			//(old)sometimes values for A and YIntercept are NaN for some reason
 			//MessageBox.Show(Convert.ToString(BestFit.Print()));
-
+			RunningChart = true;
 			string alpha = CurrentData.LocalColumn.Regress(CurrentData.LocalColumn.Data);
 			MessageBox.Show(alpha, "equation");
 			List<Coordinate> coordList = CurrentData.LocalColumn.Data;
@@ -284,6 +293,9 @@ namespace PrototypeV2
 				yValues[i] = location.Y;
 				i = i + 1;
 			}
+			x = xValues;
+			y = yValues;
+			a = alpha;
 			pltHome_Paint(xValues, yValues, alpha);
 
 			//time to paint oh yeahhhh
@@ -311,6 +323,31 @@ namespace PrototypeV2
 			Coordinates pt1 = new Coordinates(points[0], points[1]);
 			Coordinates pt2 = new Coordinates(points[2], points[3]);
 			var line = pltHome.Plot.Add.Line(pt1, pt2);
+			pltHome.Plot.XLabel("Horizonal Axis");
+			pltHome.Plot.YLabel("Vertical Axis");
+			pltHome.Plot.Title("Plot Title");
+
+			if (ConnectPoints == true)
+			{
+				pltHome.Plot.Add.Scatter(dataX, dataY);
+			}
+			else
+			{
+				pltHome.Plot.Add.ScatterPoints(dataX, dataY);
+			}
+			pltHome.Plot.Axes.AutoScale();
+			pltHome.Refresh();
+		}
+		private void pltHome_Paint(double[] dataX, double[] dataY, String alpha, string xLabel, string yLabel, string dataType)
+		{
+			pltHome.Plot.Clear();
+			double[] points = toCoordinate(alpha, dataX, dataY);
+			Coordinates pt1 = new Coordinates(points[0], points[1]);
+			Coordinates pt2 = new Coordinates(points[2], points[3]);
+			var line = pltHome.Plot.Add.Line(pt1, pt2);
+			pltHome.Plot.XLabel(xLabel);
+			pltHome.Plot.YLabel(yLabel);
+			pltHome.Plot.Title($"{dataType} at {xLabel} against {yLabel}");
 
 			if (ConnectPoints == true)
 			{
@@ -349,6 +386,15 @@ namespace PrototypeV2
 				ConnectPoints = true;
 			else
 				ConnectPoints = false;
+		}
+
+		private void BtnView_Click(object sender, EventArgs e)
+		{
+			if (RunningChart)
+			{
+				GraphView Viewer = new GraphView(x, y, a, ConnectPoints);
+				Viewer.Show();
+			}
 		}
 	}
 }
