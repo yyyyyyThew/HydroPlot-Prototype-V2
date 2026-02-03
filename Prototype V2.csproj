@@ -23,6 +23,11 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
     <PackageReference Include="NPOI" Version="2.7.5" />
     <PackageReference Include="ScottPlot.WinForms" Version="5.1.57" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="App.Config" />
   </ItemGroup>
 
 </Project>

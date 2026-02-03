@@ -8,6 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Prototype_V2
 {
@@ -21,7 +25,16 @@ namespace Prototype_V2
 		SqlConnection Connection;
 		public LoginScreen(SqlConnection conn)
 		{
+			//connect to the known good connection from Program.Home
 			Connection = conn;
+			conn.Open();
+			//find device and username
+			string deviceName = Environment.MachineName.ToString();
+
+			//send the start timestamp to the database
+			string timeStamp = DateTime.Now.ToString();
+			SqlCommand cmd = new SqlCommand($"INSERT INTO Sessions (session_timestamp, user_id, device_id, ) VALUES ({timeStamp}, )", conn);
+
 			InitializeComponent();
 		}
 		private void txtUserID_TextChanged(object sender, EventArgs e)

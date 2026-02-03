@@ -22,6 +22,7 @@ IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Devic
 BEGIN
     CREATE TABLE Devices (
         device_id INT PRIMARY KEY IDENTITY,
+		device_name VARCHAR(100),
         processor VARCHAR(100),
         ram_size INT,
         os_version VARCHAR(50)
