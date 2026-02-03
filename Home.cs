@@ -14,6 +14,7 @@ namespace PrototypeV2
 		string a;
 		private bool ConnectPoints;
 		private bool RunningChart;
+		SqlConnection conn;
 		public Home()
 		{
 			RunningChart = false;
@@ -29,7 +30,7 @@ namespace PrototypeV2
 		private bool goPaint;
 		private void CustomComponents()
 		{
-			Connect(@"A240392\SQLEXPRESS");
+			conn = Connect(@"(localDB)\testDB");
 			//send the start timestamp to the database
 
 
@@ -139,7 +140,7 @@ namespace PrototypeV2
 		private void Connect()
 		{
 			string str;
-			//string testpath = @"(localDB)\testDB";
+			string testpath = @"(localDB)\testDB";
 			string finalpath = @"A240392\SQLEXPRESS";
 			//eventually pull from XML settings to find this
 			SqlConnection myConn = new SqlConnection($@"Server={finalpath};Database=master;TrustServerCertificate=True;Trusted_Connection=True;");
@@ -179,7 +180,7 @@ namespace PrototypeV2
 				myConn.Close();
 			}
 		}
-		static private void Connect(string path)
+		static private SqlConnection Connect(string path)
 		{
 			string str;
 			string testpath = @"(localDB)\testDB";
@@ -196,6 +197,7 @@ namespace PrototypeV2
 				RunDDL.ExecuteNonQuery();
 				useDB.ExecuteNonQuery();
 				MessageBox.Show("Database Connnection Established");
+				return myConn;
 
 			}
 			catch (SqlException ex)
@@ -206,6 +208,7 @@ namespace PrototypeV2
 					SqlCommand useDB = new SqlCommand("USE SystemTrackerDB", myConn);
 					useDB.ExecuteNonQuery();
 					MessageBox.Show("Database already exists, connecting...", "SystemTrackerDB");
+					
 				}
 				else if (ex.Message.Contains("Database 'SystemTrackerDB' does not exist"))
 				{
@@ -229,6 +232,7 @@ namespace PrototypeV2
 			{
 				myConn.Close();
 			}
+			return null;
 		}
 		private void pictureBox1_Click(object sender, EventArgs e)
 		{
@@ -423,7 +427,7 @@ namespace PrototypeV2
 
 		private void btnLogIn_Click(object sender, EventArgs e)
 		{
-			new LoginScreen().Show();
+			new LoginScreen(conn).Show();
 		}
 
 		private void btnPrint_Click(object sender, EventArgs e)
