@@ -1,7 +1,7 @@
 using Microsoft.Data.SqlClient;
 using Prototype_V2;
 using ScottPlot;
-
+using System.Configuration;
 
 namespace PrototypeV2
 {
@@ -14,12 +14,14 @@ namespace PrototypeV2
 		string a;
 		private bool ConnectPoints;
 		private bool RunningChart;
-		SqlConnection conn;
+		SqlConnection _connection;
 		public Home()
 		{
 			RunningChart = false;
 			ConnectPoints = false;
 			goPaint = false;
+			MessageBox.Show(Settings.Read("Key0"));
+
 			InitializeComponent();
 			CustomComponents();
 		}
@@ -30,26 +32,18 @@ namespace PrototypeV2
 		private bool goPaint;
 		private void CustomComponents()
 		{
-			conn = Connect(@"(localDB)\testDB");
-			//send the start timestamp to the database
-
+			_connection = Connect(@"A240392\SQLEXPRESS");
 
 			//set the filter for the file pick dialogue
 			//description of filter goes in the brackets
 			//after the pipe goes the actual file extensions, followed by a semi colon.
 			FpkExcel.Filter = "Spreadsheet Files(*.CSV, *.XLSX)|*.CSV;*.XLSX|All files (*.*)|*.*";
-			//initialises the width of each pen type
-			//blackPen.Width = 5;
-			//redPen.Width = 2;
+			//Disable buttons that will try to access data that isn't loaded
 			BtnRegress.Enabled = false;
 			BtnSort.Enabled = false;
 			BtnPrint.Enabled = false;
 			BtnView.Enabled = false;
 			chk_ConnectPoints.Enabled = false;
-			// Subscribe to the Paint event
-			//this.Paint += Home_Paint;
-
-
 		}
 
 		//private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -140,7 +134,7 @@ namespace PrototypeV2
 		private void Connect()
 		{
 			string str;
-			string testpath = @"(localDB)\testDB";
+			//string testpath = @"(localDB)\testDB";
 			string finalpath = @"A240392\SQLEXPRESS";
 			//eventually pull from XML settings to find this
 			SqlConnection myConn = new SqlConnection($@"Server={finalpath};Database=master;TrustServerCertificate=True;Trusted_Connection=True;");
@@ -208,7 +202,7 @@ namespace PrototypeV2
 					SqlCommand useDB = new SqlCommand("USE SystemTrackerDB", myConn);
 					useDB.ExecuteNonQuery();
 					MessageBox.Show("Database already exists, connecting...", "SystemTrackerDB");
-					
+
 				}
 				else if (ex.Message.Contains("Database 'SystemTrackerDB' does not exist"))
 				{
@@ -226,13 +220,14 @@ namespace PrototypeV2
 				{
 					// Show other error messages
 					MessageBox.Show("Error: " + ex.Message, "Error");
+					return null;
 				}
+				return myConn;
 			}
 			finally
 			{
 				myConn.Close();
 			}
-			return null;
 		}
 		private void pictureBox1_Click(object sender, EventArgs e)
 		{
@@ -427,7 +422,7 @@ namespace PrototypeV2
 
 		private void btnLogIn_Click(object sender, EventArgs e)
 		{
-			new LoginScreen(conn).Show();
+			new LoginScreen(_connection).Show();
 		}
 
 		private void btnPrint_Click(object sender, EventArgs e)
