@@ -2,6 +2,7 @@ using Microsoft.Data.SqlClient;
 using Prototype_V2;
 using ScottPlot;
 using System.Configuration;
+using System.IO;
 
 namespace PrototypeV2
 {
@@ -20,7 +21,8 @@ namespace PrototypeV2
 			RunningChart = false;
 			ConnectPoints = false;
 			goPaint = false;
-			MessageBox.Show(Settings.Read("Key0"));
+			Settings.AddConnection(@"Server=A240392\SQLEXPRESS;TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;", "SG20");
+			Settings.Initialise();
 
 			InitializeComponent();
 			CustomComponents();
