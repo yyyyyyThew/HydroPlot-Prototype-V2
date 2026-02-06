@@ -21,9 +21,8 @@ namespace PrototypeV2
 			RunningChart = false;
 			ConnectPoints = false;
 			goPaint = false;
-			Settings.AddConnection(@"Server=A240392\SQLEXPRESS;TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;", "SG20");
-			Settings.Initialise();
-
+			//Settings.AddConnection(@"Server=A240392\SQLEXPRESS;TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;", "SG20");
+			//Settings.Initialise();
 			InitializeComponent();
 			CustomComponents();
 		}
