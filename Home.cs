@@ -1,8 +1,11 @@
 using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic.ApplicationServices;
 using Prototype_V2;
 using ScottPlot;
 using System.Configuration;
+using System.Drawing;
 using System.IO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PrototypeV2
 {
@@ -182,52 +185,35 @@ namespace PrototypeV2
 			string finalpath = @"A240392\SQLEXPRESS";
 			//eventually pull from XML settings to find this
 			//SqlConnection myConn = new SqlConnection($@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;");
-			SqlConnection myConn = new SqlConnection($@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;");
 			try
 			{
+				SqlConnection myConn = new SqlConnection($@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;");
 				myConn.Open();
-				str = File.ReadAllText("createDB.sql");
-				SqlCommand RunDDL = new SqlCommand(str, myConn);
-				SqlCommand useDB = new SqlCommand("USE SystemTrackerDB", myConn);
-				RunDDL.ExecuteNonQuery();
-				useDB.ExecuteNonQuery();
 				MessageBox.Show("Database Connnection Established");
+				myConn.Close();
 				return myConn;
 
 			}
 			catch (SqlException ex)
 			{
-				// Handle specific exception if the database already exists
-				if (ex.Message.Contains("database already exists"))
+				try
 				{
-					SqlCommand useDB = new SqlCommand("USE SystemTrackerDB", myConn);
-					useDB.ExecuteNonQuery();
-					MessageBox.Show("Database already exists, connecting...", "SystemTrackerDB");
-
-				}
-				else if (ex.Message.Contains("Database 'SystemTrackerDB' does not exist"))
-				{
-					str = File.ReadAllText("createDB.sql");
+					SqlConnection myConn = new SqlConnection($@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;");
+					myConn.Open();
 					SqlCommand createDB = new SqlCommand("CREATE DATABASE SystemTrackerDB;", myConn);
-					SqlCommand RunDDL = new SqlCommand(str, myConn);
+					SqlCommand UseDB = new SqlCommand("USE SystemTrackerDB", myConn);
+					SqlCommand RunDDL = new SqlCommand(File.ReadAllText("createDB.sql"), myConn);
 					createDB.ExecuteNonQuery();
+					UseDB.ExecuteNonQuery();
 					RunDDL.ExecuteNonQuery();
-					//SqlCommand useDB = new SqlCommand("USE SystemTrackerDB", myConn);
-					//useDB.ExecuteNonQuery();
-					MessageBox.Show("Creating DB");
-					Connect(path);
+					return myConn;
 				}
-				else
+
+				catch (Exception finalex)
 				{
-					// Show other error messages
-					MessageBox.Show("Error: " + ex.Message, "Error");
+					MessageBox.Show(finalex.Message);
 					return null;
 				}
-				return myConn;
-			}
-			finally
-			{
-				myConn.Close();
 			}
 		}
 		private void pictureBox1_Click(object sender, EventArgs e)
@@ -367,7 +353,7 @@ namespace PrototypeV2
 		//	pltHome.Plot.Axes.AutoScale();
 		//	pltHome.Refresh();
 		//}
-		private void pltHome_Paint(double[] dataX, double[] dataY, String alpha)
+		private void pltHome_Paint(double[] dataX, double[] dataY, string alpha)
 		{
 			pltHome.Plot.Clear();
 			double[] points = toCoordinate(alpha, dataX, dataY);
@@ -389,7 +375,7 @@ namespace PrototypeV2
 			pltHome.Plot.Axes.AutoScale();
 			pltHome.Refresh();
 		}
-		private void pltHome_Paint(double[] dataX, double[] dataY, String alpha, string xLabel, string yLabel, string dataType)
+		private void pltHome_Paint(double[] dataX, double[] dataY, string alpha, string xLabel, string yLabel, string dataType)
 		{
 			pltHome.Plot.Clear();
 			double[] points = toCoordinate(alpha, dataX, dataY);

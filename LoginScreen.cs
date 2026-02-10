@@ -45,6 +45,8 @@ namespace Prototype_V2
 		{
 			Connection.Open();
 			hashedPassword = "";
+			int usernumber;
+			int DeviceID;
 			try
 			{
 				SqlCommand SelectPwd = new SqlCommand($"SELECT hashed_password FROM Users WHERE username = '{userID}'", Connection);
@@ -55,38 +57,53 @@ namespace Prototype_V2
 					hashedPassword = sr.GetString(0);
 					sr.Close();
 				}
+				//should be set to retrieve the hashed password from a database based on inputted userID
+				if (passwordTry == null || passwordTry == "")
+				{
+					MessageBox.Show("Please enter a password", "Password error");
+				}
+				else
+				{
+					TinyEncryption encryption = new TinyEncryption(passwordTry, key);
+					MessageBox.Show(encryption.Encrypt(), "Encrypted Password");//outputs hashed value
+					if (encryption.Encrypt() == hashedPassword)
+					{
+
+						//find device name and id
+						string deviceName = Environment.MachineName.ToString();
+						using (sr = new SqlCommand($"SELECT device_id FROM Devices WHERE device_name = '{deviceName}'", Connection).ExecuteReader())
+						{
+							sr.Read();
+							DeviceID = sr.GetInt32(0);
+							sr.Close();
+						}
+
+						//find user id
+						using (sr = new SqlCommand($"SELECT user_id FROM Users WHERE username = '{userID}'", Connection).ExecuteReader())
+						{
+							sr.Read();
+							usernumber = sr.GetInt32(0);
+							sr.Close();
+						}
+
+						//find time
+						string timeStamp = DateTime.Now.ToString();
+
+						SqlCommand cmd = new SqlCommand($"INSERT INTO Sessions (session_timestamp, user_id, device_id) VALUES ('{timeStamp}', '{usernumber}' , '{DeviceID}')", Connection);
+						cmd.ExecuteNonQuery();
+						Connection.Close();
+						this.Close();
+					}
+					else
+					{
+						MessageBox.Show("Incorrect password, please try again", "Password error");
+					}
+				}
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.ToString());
 			}
-			//should be set to retrieve the hashed password from a database based on inputted userID
-			if (passwordTry == null || passwordTry == "")
-			{
-				MessageBox.Show("Please enter a password", "Password error");
-			}
-			else
-			{
-				TinyEncryption encryption = new TinyEncryption(passwordTry, key);
-				MessageBox.Show(encryption.Encrypt(), "Encrypted Password");//outputs hashed value
-				if (encryption.Encrypt() == hashedPassword)
-				{
-					//find device and username
-					string deviceName = Environment.MachineName.ToString();
-
-					//send the start timestamp to the database
-					string timeStamp = DateTime.Now.ToString();
-					SqlCommand cmd = new SqlCommand($"INSERT INTO Sessions (session_timestamp, user_id, device_id, ) VALUES ('{timeStamp}', '{userID}' , '{@deviceName}' )", Connection);
-					cmd.ExecuteNonQuery();
-					Connection.Close();
-					this.Close();
-				}
-				else
-				{
-					MessageBox.Show("Incorrect password, please try again", "Password error");
-				}
-			}
-
 
 
 		}
@@ -111,6 +128,12 @@ namespace Prototype_V2
 			string Query = $"INSERT INTO Users VALUES ('{testUser}', '{hashedPass}', 'Admin');";
 			SqlCommand CreateAccount = new SqlCommand(Query,Connection);
 			CreateAccount.ExecuteNonQuery();
+
+			string testDevice = Environment.MachineName.ToString();
+			Query = $"INSERT INTO Devices (device_name) VALUES ('{testDevice}')";
+			SqlCommand CreateDevice = new SqlCommand(Query,Connection);
+			CreateDevice.ExecuteNonQuery();
+			Connection.Close();
 		}
 	}
 }
