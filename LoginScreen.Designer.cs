@@ -32,12 +32,13 @@
 			txtPassword = new TextBox();
 			btnCancel = new Button();
 			btnLogin = new Button();
+			btn_SignUp = new Button();
 			SuspendLayout();
 			// 
 			// txtUserID
 			// 
 			txtUserID.Location = new Point(379, 222);
-			txtUserID.Margin = new Padding(4, 4, 4, 4);
+			txtUserID.Margin = new Padding(4);
 			txtUserID.Name = "txtUserID";
 			txtUserID.PlaceholderText = "User Name";
 			txtUserID.Size = new Size(242, 31);
@@ -47,7 +48,7 @@
 			// txtPassword
 			// 
 			txtPassword.Location = new Point(379, 264);
-			txtPassword.Margin = new Padding(4, 4, 4, 4);
+			txtPassword.Margin = new Padding(4);
 			txtPassword.Name = "txtPassword";
 			txtPassword.PasswordChar = '*';
 			txtPassword.PlaceholderText = "Password";
@@ -58,7 +59,7 @@
 			// btnCancel
 			// 
 			btnCancel.Location = new Point(504, 305);
-			btnCancel.Margin = new Padding(4, 4, 4, 4);
+			btnCancel.Margin = new Padding(4);
 			btnCancel.Name = "btnCancel";
 			btnCancel.Size = new Size(118, 36);
 			btnCancel.TabIndex = 5;
@@ -69,7 +70,7 @@
 			// btnLogin
 			// 
 			btnLogin.Location = new Point(379, 305);
-			btnLogin.Margin = new Padding(4, 4, 4, 4);
+			btnLogin.Margin = new Padding(4);
 			btnLogin.Name = "btnLogin";
 			btnLogin.Size = new Size(118, 36);
 			btnLogin.TabIndex = 4;
@@ -77,16 +78,27 @@
 			btnLogin.UseVisualStyleBackColor = true;
 			btnLogin.Click += btnLogin_Click;
 			// 
+			// btn_SignUp
+			// 
+			btn_SignUp.Location = new Point(12, 516);
+			btn_SignUp.Name = "btn_SignUp";
+			btn_SignUp.Size = new Size(112, 34);
+			btn_SignUp.TabIndex = 8;
+			btn_SignUp.Text = "Register";
+			btn_SignUp.UseVisualStyleBackColor = true;
+			btn_SignUp.Click += btn_SignUp_Click;
+			// 
 			// LoginScreen
 			// 
 			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(1000, 562);
+			Controls.Add(btn_SignUp);
 			Controls.Add(txtUserID);
 			Controls.Add(txtPassword);
 			Controls.Add(btnCancel);
 			Controls.Add(btnLogin);
-			Margin = new Padding(4, 4, 4, 4);
+			Margin = new Padding(4);
 			Name = "LoginScreen";
 			Text = "LoginScreen";
 			Load += LoginScreen_Load;
@@ -100,5 +112,6 @@
 		private TextBox txtPassword;
 		private Button btnCancel;
 		private Button btnLogin;
+		private Button btn_SignUp;
 	}
 }
