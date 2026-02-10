@@ -1,10 +1,3 @@
--Line
--Coordinate
--Excel
--Line
--Program
--sheetpicker
--Table
--Sheetpicker(FORM)
--GraphView(FORM)
--Home(FORM)
+to do:
+remove nulls from device hardware
+test functionality with no debugger attached
