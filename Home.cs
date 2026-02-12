@@ -11,12 +11,14 @@ namespace PrototypeV2
 {
 	public partial class Home : Form
 	{
-		//will eventually be fed into the Excel() constructor as the file path
 		Excel CurrentData;
+		Table UserData;
+
 		//Line BestFit;
 		double[] x, y;
 		string a;
 		private bool ConnectPoints;
+		private bool UseExcel;
 		private bool RunningChart;
 		SqlConnection _connection;
 		public Home()
@@ -24,6 +26,7 @@ namespace PrototypeV2
 			RunningChart = false;
 			ConnectPoints = false;
 			goPaint = false;
+			UseExcel = true;
 			//Settings.AddConnection(@"Server=A240392\SQLEXPRESS;TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;", "SG20");
 			//Settings.Initialise();
 			InitializeComponent();
@@ -206,6 +209,7 @@ namespace PrototypeV2
 					createDB.ExecuteNonQuery();
 					UseDB.ExecuteNonQuery();
 					RunDDL.ExecuteNonQuery();
+					myConn.Close();
 					return myConn;
 				}
 
@@ -317,6 +321,15 @@ namespace PrototypeV2
 			//(old) for some reason this always returns 0 for vars that should have different data
 			//(old)sometimes values for A and YIntercept are NaN for some reason
 			//MessageBox.Show(Convert.ToString(BestFit.Print()));
+			Table Data;
+			if (UseExcel == true)
+			{
+				Data = CurrentData.LocalColumn;
+			}
+			else
+			{
+				Data = UserData;
+			}
 			RunningChart = true;
 			string alpha = CurrentData.LocalColumn.Regress(CurrentData.LocalColumn.Data);
 			MessageBox.Show(alpha, "equation");
@@ -431,6 +444,50 @@ namespace PrototypeV2
 			{
 				GraphView Viewer = new GraphView(x, y, a, ConnectPoints);
 				Viewer.Show();
+			}
+		}
+
+		private void BtnCreate_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				double x;
+				double y;
+				UseExcel = false;
+				//UserData = DgvCurrentData[];
+				List<Coordinate> tempData = new List<Coordinate>();
+				foreach (DataGridViewRow row in DgvCurrentData.Rows)
+				{
+					x = Convert.ToDouble(row.Cells[0].Value);
+					y = Convert.ToDouble(row.Cells[1].Value);
+					tempData.Add(new Coordinate(x, y));
+					UserData = new Table(tempData, "User Data", "", "");
+				}
+			}
+			catch
+			{
+				MessageBox.Show("Invalid input data");
+			}
+		}
+
+		private void DgvCurrentData_CellContentClick(object sender, DataGridViewCellEventArgs e)
+		{
+			DgvCurrentData.ColumnCount = 2;
+			DgvCurrentData.Columns[0].ValueType = typeof(double);
+			DgvCurrentData.Columns[0].DefaultHeaderCellType = typeof(string);
+			DgvCurrentData.Columns[1].ValueType = typeof(double);
+			DgvCurrentData.Columns[1].DefaultHeaderCellType = typeof(string);
+
+
+		}
+
+		private void DgvCurrentData_Click(object sender, EventArgs e)
+		{
+			if (DgvCurrentData.Rows.Count == 0)
+			{
+				DgvCurrentData.ColumnCount = 2;
+				DgvCurrentData.Columns[0].ValueType = typeof(double);
+				DgvCurrentData.Columns[1].ValueType = typeof(double);
 			}
 		}
 	}

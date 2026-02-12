@@ -1,3 +1,5 @@
+--commented ddl only works when sql is interpreted, in C# USE and CREATE DATABASE need to be in seperate operations
+
 --IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'SystemTrackerDB')
 --BEGIN
 --    CREATE DATABASE SystemTrackerDB;
@@ -22,7 +24,8 @@ IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Devic
 BEGIN
     CREATE TABLE Devices (
         device_id int PRIMARY KEY IDENTITY,
-		device_name VARCHAR(16),
+		device_name VARCHAR(16) UNIQUE,
+		--each device should only have one entry, such that data is atomic
         processor VARCHAR(100),
         ram_size INT,
         os_version VARCHAR(50)
@@ -35,7 +38,8 @@ BEGIN
     CREATE TABLE Sessions (
         session_id INT PRIMARY KEY IDENTITY,
         session_timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        runtime INT NOT NULL,
+        runtime INT,
+		--must be updated on form close, as the program won't know uptime when it get started
 		user_id INT,
 		device_id int,
         CONSTRAINT fk_sessions_user FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE SET NULL ON UPDATE CASCADE,
