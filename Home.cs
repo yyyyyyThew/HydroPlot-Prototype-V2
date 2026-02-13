@@ -23,6 +23,11 @@ namespace PrototypeV2
 		SqlConnection _connection;
 		public Home()
 		{
+			string outString = "";
+			LinkedList<string> list = Settings.Read();
+			foreach (string str in list) { outString += str; }
+			MessageBox.Show(outString);
+
 			RunningChart = false;
 			ConnectPoints = false;
 			goPaint = false;
@@ -117,11 +122,11 @@ namespace PrototypeV2
 
 				//turns m and c into a straight line
 				int index;
-				if (dataX.Length < dataY.Length)
+				if (dataX.Length <= dataY.Length)
 				{
 					index = dataX.Length;
 				}
-				else if (dataX.Length > dataY.Length)
+				else if (dataX.Length >= dataY.Length)
 				{
 					index = dataY.Length;
 				}
@@ -135,6 +140,7 @@ namespace PrototypeV2
 				double lastYVar = m * lastXVar + c;
 				return new double[] { firstXVar, firstYVar, lastXVar, lastYVar };
 			}
+			//does not create a line if the equation is not in correct format
 			return new double[] { 0, 0, 0, 0 };
 		}
 
@@ -290,11 +296,20 @@ namespace PrototypeV2
 
 		private void BtnSort_Click(object sender, EventArgs e)
 		{
-			List<Coordinate> SortedData = CurrentData.LocalColumn.Data;
+			Table Data;
+			if (UseExcel == true)
+			{
+				Data = CurrentData.LocalColumn;
+			}
+			else
+			{
+				Data = UserData;
+			}
+			List<Coordinate> SortedData = Data.Data;
 			try
 			{
-				SortedData = CurrentData.LocalColumn.Sort(CurrentData.LocalColumn.Data);
-				CurrentData.LocalColumn.Data = SortedData;
+				SortedData = Data.Sort(Data.Data);
+				Data.Data = SortedData;
 				MessageBox.Show("Data Sorted", "Task Complete");
 			}
 			catch (Exception ex)
@@ -302,7 +317,7 @@ namespace PrototypeV2
 				MessageBox.Show(Convert.ToString(ex), "Error Encountered");
 			}
 			DgvCurrentData.Rows.Clear();
-			DgvCurrentData.Rows.Add(CurrentData.xtitle, CurrentData.ytitle);
+			DgvCurrentData.Rows.Add(Data.XLabel, Data.YLabel);
 			for (int items = 0; items < SortedData.Count(); items++)
 			{
 				DgvCurrentData.Rows.Add(SortedData[items].X, SortedData[items].Y);
@@ -331,9 +346,9 @@ namespace PrototypeV2
 				Data = UserData;
 			}
 			RunningChart = true;
-			string alpha = CurrentData.LocalColumn.Regress(CurrentData.LocalColumn.Data);
+			string alpha = Data.Regress(Data.Data);
 			MessageBox.Show(alpha, "equation");
-			List<Coordinate> coordList = CurrentData.LocalColumn.Data;
+			List<Coordinate> coordList = Data.Data;
 			double[] xValues = new double[coordList.Count];
 			double[] yValues = new double[coordList.Count];
 			int i = 0;
@@ -454,6 +469,11 @@ namespace PrototypeV2
 				double x;
 				double y;
 				UseExcel = false;
+				BtnRegress.Enabled = true;
+				BtnSort.Enabled = true;
+				BtnPrint.Enabled = true;
+				BtnView.Enabled = true;
+				chk_ConnectPoints.Enabled = true;
 				//UserData = DgvCurrentData[];
 				List<Coordinate> tempData = new List<Coordinate>();
 				foreach (DataGridViewRow row in DgvCurrentData.Rows)
@@ -472,12 +492,6 @@ namespace PrototypeV2
 
 		private void DgvCurrentData_CellContentClick(object sender, DataGridViewCellEventArgs e)
 		{
-			DgvCurrentData.ColumnCount = 2;
-			DgvCurrentData.Columns[0].ValueType = typeof(double);
-			DgvCurrentData.Columns[0].DefaultHeaderCellType = typeof(string);
-			DgvCurrentData.Columns[1].ValueType = typeof(double);
-			DgvCurrentData.Columns[1].DefaultHeaderCellType = typeof(string);
-
 
 		}
 
