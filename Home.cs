@@ -333,7 +333,8 @@ namespace PrototypeV2
 			x = xValues;
 			y = yValues;
 			a = alpha;
-			pltHome_Paint(xValues, yValues, alpha);
+			pltHome_Paint(xValues, yValues, alpha, CurrentData.xtitle, CurrentData.ytitle, "River Flow");
+			//pltHome_Paint(xValues, yValues, alpha);
 
 			//time to paint oh yeahhhh
 			//Graphics g = pictureBox1.CreateGraphics();
