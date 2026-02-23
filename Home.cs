@@ -28,6 +28,9 @@ namespace PrototypeV2
 			foreach (string str in list) { outString += str; }
 			MessageBox.Show(outString);
 
+
+			Settings.getConnections();
+
 			RunningChart = false;
 			ConnectPoints = false;
 			goPaint = false;

@@ -4,6 +4,15 @@ namespace Prototype_V2
 
 	internal class Settings
 	{
+		public static void addConnection(string connString)
+		{
+			XmlWriter writer = XmlWriter.Create("appSettings.xml");
+			
+			writer.WriteStartElement("TIME_STAMP");
+			//writer.WriteAttribute("value", "");
+			//writer.WriteAttribute("timezone", "");
+			writer.WriteEndElement();
+		}
 		public static string getConnections()
 		{
 			XmlTextReader reader = new XmlTextReader("appSettings.xml");
