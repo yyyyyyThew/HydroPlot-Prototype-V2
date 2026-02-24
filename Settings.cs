@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Configuration;
+using System.Xml;
 namespace Prototype_V2
 {
 
@@ -6,12 +7,11 @@ namespace Prototype_V2
 	{
 		public static void addConnection(string connString)
 		{
-			XmlWriter writer = XmlWriter.Create("appSettings.xml");
-			
-			writer.WriteStartElement("TIME_STAMP");
-			//writer.WriteAttribute("value", "");
-			//writer.WriteAttribute("timezone", "");
-			writer.WriteEndElement();
+			LinkedList<string> list = Read();
+			string command = "<add key='{key}' value='{value}' />\n";
+			LinkedListNode<string> newNode = new LinkedListNode<string>(command);
+			list.AddAfter(list.Find("<connectionString>\n"), newNode);
+			Write(list);
 		}
 		public static string getConnections()
 		{
@@ -27,6 +27,7 @@ namespace Prototype_V2
 					}
 				}
 			}
+			reader.Close();
 			return output;
 				//switch (reader.NodeType)
 				//{
@@ -71,11 +72,13 @@ namespace Prototype_V2
 						{
 							currentNode += "<" + reader.Name;
 							while (reader.MoveToNextAttribute()) // Read the attributes.
+							{
 								currentNode += " " + reader.Name + "='" + reader.Value + "'";
-							currentNode += "/";
-							currentNode += ">\n";
-							o.AddLast(currentNode);
+								currentNode += ">\n";
+								o.AddLast(currentNode);
+							}
 							break;
+							
 						}
 					case (XmlNodeType.Text): // node is text
 						{
@@ -86,13 +89,23 @@ namespace Prototype_V2
 					case (XmlNodeType.EndElement): // node is element end tag
 						{
 							currentNode += "</" + reader.Name;
-							currentNode += ">" + "/n";
+							currentNode += ">" + "\n";
 							o.AddLast(currentNode);
 							break;
 						}
 				}
 			}
+			reader.Close();
 			return o;
+		}
+		public static void Write(LinkedList<string> o)
+		{
+			string FinalXML = "";
+			foreach (string s in o)
+			{
+				FinalXML += s;
+			}
+			File.WriteAllText("appSettings.xml", FinalXML);
 		}
 	}
 }

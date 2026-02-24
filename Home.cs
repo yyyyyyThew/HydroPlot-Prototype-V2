@@ -1,12 +1,6 @@
 using Microsoft.Data.SqlClient;
-using Microsoft.VisualBasic.ApplicationServices;
 using Prototype_V2;
 using ScottPlot;
-using System.Configuration;
-using System.Drawing;
-using System.IO;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace PrototypeV2
 {
 	public partial class Home : Form
@@ -23,32 +17,13 @@ namespace PrototypeV2
 		SqlConnection _connection;
 		public Home()
 		{
-			string outString = "";
-			LinkedList<string> list = Settings.Read();
-			foreach (string str in list) { outString += str; }
-			MessageBox.Show(outString);
-
-
-			Settings.getConnections();
-
-			RunningChart = false;
-			ConnectPoints = false;
-			goPaint = false;
-			UseExcel = true;
-			//Settings.AddConnection(@"Server=A240392\SQLEXPRESS;TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;", "SG20");
-			//Settings.Initialise();
 			InitializeComponent();
 			CustomComponents();
 		}
-		//private Pen blackPen = new Pen(Color.FromArgb(255, 0, 0, 0));
-		//private Pen redPen = new Pen(Color.FromArgb(255, 255, 0, 0));
-
-		// Class-level declarations for the pens used
 		private bool goPaint;
 		private void CustomComponents()
 		{
 			_connection = Connect(@"A240392\SQLEXPRESS");
-
 			//set the filter for the file pick dialogue
 			//description of filter goes in the brackets
 			//after the pipe goes the actual file extensions, followed by a semi colon.
@@ -59,39 +34,15 @@ namespace PrototypeV2
 			BtnPrint.Enabled = false;
 			BtnView.Enabled = false;
 			chk_ConnectPoints.Enabled = false;
+			//sets class variable default values
+			RunningChart = false;
+			ConnectPoints = false;
+			UseExcel = true;
 		}
-
-		//private void pictureBox1_Paint(object sender, PaintEventArgs e)
-		//{
-		//	//(0, 0) = (72, 306)px and (m, n) = (480, 0)px
-		//	//(0, 0) is in the top left, not the bottom left, so there has to be a method that turns coordinates into pixels
-		//	Graphics g = e.Graphics;
-		//	//maybe move EVERYTHING in by a few px
-		//	//draws the axes
-		//	//y (0.15*height margin)
-		//	g.DrawLine(blackPen, 72, 54, 72, 306);
-		//	//x (0.15*width margin)
-		//	g.DrawLine(blackPen, 72, 306, 475, 306);
-		//	//draws a line starting from (0, 0) that repeats every n pixels
-		//	int n = 20;
-		//	//sets x
-		//	for (int group = 72; group < 480; group += n)
-		//	{
-		//		g.DrawLine(blackPen, group, 306, group, 298);
-		//	}
-		//	// sets y
-		//	for (int group = 306; group >= 54; group -= n)
-		//	{
-		//		g.DrawLine(blackPen, 72, group, 80, group);
-		//	}
-		//	//at (0, 0)
-		//	g.DrawEllipse(redPen, new Rectangle(72, 306, 1, 1));
-
-
-		//}
-
 		static public double[] toCoordinate(string alpha, double[] dataX, double[] dataY)
 		{
+			//turns a string formatted regression line into coordinates
+			//returns the limits where interpolation is possible
 			Coordinate max;
 			Coordinate min;
 			string subString;
@@ -143,63 +94,15 @@ namespace PrototypeV2
 				double lastYVar = m * lastXVar + c;
 				return new double[] { firstXVar, firstYVar, lastXVar, lastYVar };
 			}
-			//does not create a line if the equation is not in correct format
+			//returns the origin twice if the equation is not in correct format
 			return new double[] { 0, 0, 0, 0 };
-		}
-
-		private void Connect()
-		{
-			string str;
-			//string testpath = @"(localDB)\testDB";
-			string finalpath = @"A240392\SQLEXPRESS";
-			//eventually pull from XML settings to find this
-			SqlConnection myConn = new SqlConnection($@"Server={finalpath};Database=master;TrustServerCertificate=True;Trusted_Connection=True;");
-			str = File.ReadAllText("createDB.sql");
-
-			SqlCommand createDB = new SqlCommand(str, myConn);
-
-			try
-			{
-				myConn.Open();
-				createDB.ExecuteNonQuery();
-				MessageBox.Show("DDL has been run", "SystemTrackerDB");
-				//switching to new/existing database
-				SqlCommand useDB = new SqlCommand("USE SystemTrackerDB", myConn);
-				useDB.ExecuteNonQuery();
-				MessageBox.Show("Successfully switched to SystemTrackerDB", "SystemTrackerDB");
-			}
-			catch (SqlException ex)
-			{
-				// Handle specific exception if the database already exists
-				if (ex.Message.Contains("database already exists"))
-				{
-					MessageBox.Show("Database already exists, proceeding with the operation.", "SystemTrackerDB");
-				}
-				else if (ex.Message.Contains("Database 'SystemTrackerDB' does not exist"))
-				{
-					MessageBox.Show("Cannot open database, running offline", "Error");
-				}
-				else
-				{
-					// Show other error messages
-					MessageBox.Show("Error: " + ex.Message, "Error");
-				}
-			}
-			finally
-			{
-				myConn.Close();
-			}
 		}
 		static private SqlConnection Connect(string path)
 		{
-			string str;
-			string testpath = @"(localDB)\testDB";
-			string finalpath = @"A240392\SQLEXPRESS";
-			//eventually pull from XML settings to find this
-			//SqlConnection myConn = new SqlConnection($@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;");
 			try
 			{
 				SqlConnection myConn = new SqlConnection($@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;");
+				//eventually pull from XML settings to find connection string
 				myConn.Open();
 				MessageBox.Show("Database Connnection Established");
 				myConn.Close();
@@ -231,19 +134,8 @@ namespace PrototypeV2
 		}
 		private void pictureBox1_Click(object sender, EventArgs e)
 		{
-			goPaint = true;
 			Refresh();
 		}
-
-		//private void pictureBox1_DoubleClick(object sender, EventArgs e)
-		//{
-		//	goPaint = true;
-		//	Graphics g = pictureBox1.CreateGraphics();
-		//	Rectangle rect = new Rectangle(5, 4, 5, 5);
-		//	g.DrawEllipse(blackPen, new Rectangle(0, 0, 2, 2));
-		//	g.DrawEllipse(blackPen, new Rectangle(460, 340, 2, 2));
-		//}
-
 		private void Home_Load(object sender, EventArgs e)
 		{
 
@@ -299,6 +191,7 @@ namespace PrototypeV2
 
 		private void BtnSort_Click(object sender, EventArgs e)
 		{
+			//uses data from file if UseExel is true, or data in the table otherwise
 			Table Data;
 			if (UseExcel == true)
 			{
@@ -319,6 +212,7 @@ namespace PrototypeV2
 			{
 				MessageBox.Show(Convert.ToString(ex), "Error Encountered");
 			}
+			//resets the table and adds the sorted list
 			DgvCurrentData.Rows.Clear();
 			DgvCurrentData.Rows.Add(Data.XLabel, Data.YLabel);
 			for (int items = 0; items < SortedData.Count(); items++)
@@ -330,15 +224,6 @@ namespace PrototypeV2
 
 		private void BtnRegress_Click(object sender, EventArgs e)
 		{
-			//CurrentData.LocalColumn.Regress(CurrentData.LocalColumn.Data);
-			//Line Regression = CurrentData.LocalColumn.BestFit;
-
-			//LinearLine BestFit = new LinearLine(Regression.Gradient, Regression.YIntercept);
-			//LogLine BestFit = new LogLine(Regression.A, Regression.YIntercept);
-
-			//(old) for some reason this always returns 0 for vars that should have different data
-			//(old)sometimes values for A and YIntercept are NaN for some reason
-			//MessageBox.Show(Convert.ToString(BestFit.Print()));
 			Table Data;
 			if (UseExcel == true)
 			{
@@ -364,26 +249,11 @@ namespace PrototypeV2
 			x = xValues;
 			y = yValues;
 			a = alpha;
-			pltHome_Paint(xValues, yValues, alpha);
+			//uses the override that allows axis labels
+			pltHome_Paint(xValues, yValues, alpha, Data.XLabel, Data.YLabel, "RiverFlow");
 
-			//time to paint oh yeahhhh
-			//Graphics g = pictureBox1.CreateGraphics();
-			//from 0,0 to 70% along the x-axis
-			//Program.GetPoints(this.pictureBox1);
-			//g.DrawLine(redPen, 72, 306, 475, Convert.ToInt16(Math.Floor(306 * 0.7)));
-			//pictureBox1.Refresh();
 		}
-		//private void pltHome_Paint(double[] dataX, double[] dataY)
-		//{
-		//	//double[] dataX = { 1, 2, 3, 4, 5 };
-		//	//double[] dataY = { 1, 4, 9, 16, 25 };
-		//	//Coordinates pt1;
-		//	//Coordinates pt2;
-		//	pltHome.Plot.Add.Scatter(dataX, dataY);
-		//	//var line = pltHome.Plot.Add.Line(pt1, pt2);
-		//	pltHome.Plot.Axes.AutoScale();
-		//	pltHome.Refresh();
-		//}
+		//base method can be used if no axis labels are included
 		private void pltHome_Paint(double[] dataX, double[] dataY, string alpha)
 		{
 			pltHome.Plot.Clear();
@@ -435,7 +305,6 @@ namespace PrototypeV2
 
 		private void btnPaintPlot_Click(object sender, EventArgs e)
 		{
-			//pltHome_Paint();
 		}
 
 		private void btnLogIn_Click(object sender, EventArgs e)

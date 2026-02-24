@@ -20,6 +20,6 @@
 		<add key="Database_Enabled" value="False"/>
 	</appConfig>
 	<connectionString>
-		
+		<add key="SG20" value="Server=A240392\SQLEXPRESS;TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB"/>
 	</connectionString>
 </settings>
