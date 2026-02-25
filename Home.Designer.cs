@@ -76,6 +76,7 @@
 			BtnCreate.TabIndex = 3;
 			BtnCreate.Text = "New";
 			BtnCreate.UseVisualStyleBackColor = true;
+			BtnCreate.Click += BtnCreate_Click;
 			// 
 			// BtnRegress
 			// 
@@ -116,6 +117,8 @@
 			DgvCurrentData.ScrollBars = ScrollBars.Vertical;
 			DgvCurrentData.Size = new Size(358, 450);
 			DgvCurrentData.TabIndex = 7;
+			DgvCurrentData.CellContentClick += DgvCurrentData_CellContentClick;
+			DgvCurrentData.Click += DgvCurrentData_Click;
 			// 
 			// pltHome
 			// 

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<settings>
+	<!-- Attribute of the appConfig element is linked to the username the settings belong to -->
+	<appConfig user ="default">
+		<add key="Theme" value="Light" />
+		<add key="Height" value="1080" />
+		<add key="Width" value="1920" />
+		<add key="Database_Enabled" value="True"/>
+	</appConfig>
+	<appConfig user ="testuser">
+		<add key="Theme" value="Light" />
+		<add key="Height" value="1080" />
+		<add key="Width" value="1920" />
+		<add key="Database_Enabled" value="True"/>
+	</appConfig>
+	<appConfig user ="localonly">
+		<add key="Theme" value="Light" />
+		<add key="Height" value="1080" />
+		<add key="Width" value="1920" />
+		<add key="Database_Enabled" value="False"/>
+	</appConfig>
+	<connectionString>
+		<add key="SG20" value="Server=A240392\SQLEXPRESS;TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB"/>
+	</connectionString>
+</settings>

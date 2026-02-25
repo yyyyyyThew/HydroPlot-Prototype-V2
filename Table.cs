@@ -196,6 +196,7 @@ namespace PrototypeV2
 			return result;
 		}
 
+
 		public Table(List<Coordinate> data, string datalabel, string xlabel, string ylabel)
 		{
 			Data = data;

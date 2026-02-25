@@ -88,7 +88,8 @@ namespace Prototype_V2
 
 						//find time
 						string timeStamp = DateTime.Now.ToString();
-
+						
+						//add device info
 						SqlCommand cmd = new SqlCommand($"INSERT INTO Sessions (session_timestamp, user_id, device_id) VALUES ('{timeStamp}', '{usernumber}' , '{DeviceID}')", Connection);
 						cmd.ExecuteNonQuery();
 						Connection.Close();
