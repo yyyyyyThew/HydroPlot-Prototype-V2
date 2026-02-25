@@ -1,111 +1,130 @@
-﻿using System.Configuration;
-using System.Xml;
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Xml.Linq;
+
 namespace Prototype_V2
 {
-
 	internal class Settings
 	{
-		public static void addConnection(string connString)
+
+		public static void AddConnection(string key, string value)
 		{
-			LinkedList<string> list = Read();
-			string command = "<add key='{key}' value='{value}' />\n";
-			LinkedListNode<string> newNode = new LinkedListNode<string>(command);
-			list.AddAfter(list.Find("<connectionString>\n"), newNode);
-			Write(list);
-		}
-		public static string getConnections()
-		{
-			XmlTextReader reader = new XmlTextReader("appSettings.xml");
-			string output = "";
-			while (reader.Read())
+			XDocument doc = XDocument.Load("appSettings.xml");
+
+			XElement root = doc.Element("settings");
+			XElement connectionNode = null;
+
+			if (root != null)
 			{
-				if (reader.NodeType == XmlNodeType.Element && reader.Name == "connectionString")
+				connectionNode = root.Element("connectionString");
+			}
+
+			if (connectionNode == null)
+			{
+				connectionNode = new XElement("connectionString");
+
+				if (root != null)
 				{
-					while (reader.MoveToNextAttribute())
+					root.Add(connectionNode);
+				}
+			}
+
+			// Remove existing connection with same key
+			XElement existing = null;
+
+			IEnumerable<XElement> addElements = connectionNode.Elements("add");
+
+			foreach (XElement element in addElements)
+			{
+				XAttribute keyAttribute = element.Attribute("key");
+
+				if (keyAttribute != null)
+				{
+					if (keyAttribute.Value == key)
 					{
-						output = reader.Value;
+						existing = element;
+						break;
 					}
 				}
 			}
-			reader.Close();
-			return output;
-				//switch (reader.NodeType)
-				//{
-				//	case (XmlNodeType.Element): // node is an element tag
-				//		{
-				//			currentNode += "<" + reader.Name;
-				//			while (reader.MoveToNextAttribute()) // Read the attributes.
-				//				currentNode += " " + reader.Name + "='" + reader.Value + "'";
-				//			currentNode += "/";
-				//			currentNode += ">\n";
-				//			o.AddLast(currentNode);
-				//			break;
-				//		}
-				//	case (XmlNodeType.Text): // node is text
-				//		{
-				//			currentNode += reader.Value + "\n";
-				//			o.AddLast(currentNode);
-				//			break;
-				//		}
-				//	case (XmlNodeType.EndElement): // node is element end tag
-				//		{
-				//			currentNode += "</" + reader.Name;
-				//			currentNode += ">" + "/n";
-				//			o.AddLast(currentNode);
-				//			break;
-				//		}
-				//}
-			
-		}
-		//returns entire XML file as a list of strings, with 1 index being 1 attribute
-		public static LinkedList<string> Read()
-		{
-			XmlTextReader reader = new XmlTextReader("appSettings.xml");
-			LinkedList<string> o = new LinkedList<string>();
-			string currentNode;
-			while (reader.Read())
+
+			if (existing != null)
 			{
-				currentNode = "";
-				switch (reader.NodeType)
+				existing.Remove();
+			}
+
+			// Create new add element
+			XElement addElement = new XElement("add");
+
+			XAttribute keyAttributeNew = new XAttribute("key", key);
+			XAttribute valueAttributeNew = new XAttribute("value", value);
+
+			addElement.Add(keyAttributeNew);
+			addElement.Add(valueAttributeNew);
+
+			connectionNode.Add(addElement);
+
+			doc.Save("appSettings.xml");
+		}
+
+		public static string GetConnection(string key)
+		{
+			if (!File.Exists("appSettings.xml"))
+			{
+				return null;
+			}
+
+			XDocument doc = XDocument.Load("appSettings.xml");
+
+			XElement settingsElement = doc.Element("settings");
+			if (settingsElement == null)
+			{
+				return null;
+			}
+
+			XElement connectionNode = settingsElement.Element("connectionString");
+			if (connectionNode == null)
+			{
+				return null;
+			}
+
+			XElement foundConnection = null;
+
+			IEnumerable<XElement> addElements = connectionNode.Elements("add");
+
+			foreach (XElement element in addElements)
+			{
+				XAttribute keyAttribute = element.Attribute("key");
+
+				if (keyAttribute != null)
 				{
-					case (XmlNodeType.Element): // node is an element tag
-						{
-							currentNode += "<" + reader.Name;
-							while (reader.MoveToNextAttribute()) // Read the attributes.
-							{
-								currentNode += " " + reader.Name + "='" + reader.Value + "'";
-								currentNode += ">\n";
-								o.AddLast(currentNode);
-							}
-							break;
-							
-						}
-					case (XmlNodeType.Text): // node is text
-						{
-							currentNode += reader.Value + "\n";
-							o.AddLast(currentNode);
-							break;
-						}
-					case (XmlNodeType.EndElement): // node is element end tag
-						{
-							currentNode += "</" + reader.Name;
-							currentNode += ">" + "\n";
-							o.AddLast(currentNode);
-							break;
-						}
+					if (keyAttribute.Value == key)
+					{
+						foundConnection = element;
+						break;
+					}
 				}
 			}
-			reader.Close();
-			return o;
-		}
-		public static void Write(LinkedList<string> o)
-		{
-			string FinalXML = "";
-			foreach (string s in o)
+
+			if (foundConnection == null)
 			{
-				FinalXML += s;
+				return null;
 			}
-			File.WriteAllText("appSettings.xml", FinalXML);
+
+			XAttribute valueAttribute = foundConnection.Attribute("value");
+
+			if (valueAttribute == null)
+			{
+				return null;
+			}
+
+			return valueAttribute.Value;
 		}
+		///<summary>
+		/// Returns the value of a connection string from the appSettings.xml file based on the provided key.
+		///</summary>>
+		///<param name="i">The key of the connection string to retrieve.</param>
+		///<returns>The value of the connection string associated with the provided key</returns>
 	}
 }

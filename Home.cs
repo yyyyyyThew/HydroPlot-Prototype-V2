@@ -23,7 +23,8 @@ namespace PrototypeV2
 		private bool goPaint;
 		private void CustomComponents()
 		{
-			_connection = Connect(@"A240392\SQLEXPRESS");
+			string connectionString = @Settings.GetConnection("SG20");
+			_connection = Connect(connectionString);
 			//set the filter for the file pick dialogue
 			//description of filter goes in the brackets
 			//after the pipe goes the actual file extensions, followed by a semi colon.
