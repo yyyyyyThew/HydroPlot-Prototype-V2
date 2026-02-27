@@ -68,6 +68,11 @@ namespace Prototype_V2
 			doc.Save("appSettings.xml");
 		}
 
+		///<summary>
+		/// Returns the value of a connection string from the appSettings.xml file based on the provided key.
+		///</summary>>
+		///<param name="key">The key of the connection string to retrieve.</param>
+		///<returns>The value of the connection string associated with the provided key</returns>
 		public static string GetConnection(string key)
 		{
 			if (!File.Exists("appSettings.xml"))
@@ -121,10 +126,5 @@ namespace Prototype_V2
 
 			return valueAttribute.Value;
 		}
-		///<summary>
-		/// Returns the value of a connection string from the appSettings.xml file based on the provided key.
-		///</summary>>
-		///<param name="i">The key of the connection string to retrieve.</param>
-		///<returns>The value of the connection string associated with the provided key</returns>
 	}
 }
