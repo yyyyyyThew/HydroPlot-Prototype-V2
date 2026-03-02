@@ -13,17 +13,14 @@ namespace PrototypeV2
 		public string Equation;
 		public abstract string Print();
 		public abstract string Simplify();
-		public double YIntercept { get; private set; }
-		public double Gradient { get; private set; }
-		public double A { get; private set; }
+		public double YIntercept { get; set; }
+		public double Gradient { get; set; }
 	}
 	class LinearLine : Line
 	{
 		// y=mx+c
 		// where (a,b) is a point on the line and m = dy/dx
 		//public string Equation;
-		private double YIntercept;
-		private double Gradient;
 		public LinearLine(double m, double c)
 		{
 			//Linear = linear;
@@ -53,14 +50,12 @@ namespace PrototypeV2
 	class LogLine : Line
 	{
 		//public string Equation;
-		private double A;
-		public double YIntercept;
-		public LogLine(double a, double c)
+		public LogLine(double m, double c)
 		{
 			//Linear = linear;
-			A = a;
 			YIntercept = c;
-			Equation = $"y={A}log(x)+{c}";
+			Gradient = m;
+			Equation = $"y={m}log(x)+{c}";
 		}
 		public override string Simplify()
 		{
@@ -69,7 +64,7 @@ namespace PrototypeV2
 		}
 		public override string Print()
 		{
-			return $"y = {A}log(x)+ {YIntercept}";
+			return $"y = {Gradient}log(x)+ {YIntercept}";
 		}
 		public double Interpolate()
 		{

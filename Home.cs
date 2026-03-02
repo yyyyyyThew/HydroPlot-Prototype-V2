@@ -24,6 +24,7 @@ namespace PrototypeV2
 		private void CustomComponents()
 		{
 			string connectionString = @Settings.GetConnection("SG20");
+			MessageBox.Show(connectionString);
 			_connection = Connect(connectionString);
 			//set the filter for the file pick dialogue
 			//description of filter goes in the brackets
@@ -102,7 +103,8 @@ namespace PrototypeV2
 		{
 			try
 			{
-				SqlConnection myConn = new SqlConnection($@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;");
+				// $@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;"
+				SqlConnection myConn = new SqlConnection(path);
 				//eventually pull from XML settings to find connection string
 				myConn.Open();
 				MessageBox.Show("Database Connnection Established");
