@@ -20,7 +20,7 @@ namespace Prototype_V2
 		{
 			try
 			{
-				reader = new StreamReader(@"path");
+				reader = new StreamReader(@path);
 
 			}
 			catch (Exception)
@@ -33,11 +33,11 @@ namespace Prototype_V2
 			while (!reader.EndOfStream)
 			{
 				var line = reader.ReadLine();
-				var values = line.Split(';');
+				var values = line.Split(',');
 				if (double.TryParse(values[0], out double i) == true && double.TryParse(values[0], out double j))
 				{
-					double xvalue = Convert.ToDouble(values[0]);
-					double yvalue = Convert.ToDouble(values[1]);
+					double xvalue = i;
+					double yvalue = j;
 					this.DataOut.Add(new Coordinate(xvalue, yvalue));
 
 				}

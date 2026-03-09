@@ -24,7 +24,7 @@ namespace PrototypeV2
 		public LinearLine(double m, double c)
 		{
 			//Linear = linear;
-			Equation = $"y={m}x+{c})";
+			Equation = $"y={m}x+{c}";
 			YIntercept = c;
 			Gradient = m;
 		}

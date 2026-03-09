@@ -6,6 +6,7 @@ namespace PrototypeV2
 	public partial class Home : Form
 	{
 		Excel CurrentData;
+		Spreadsheet CSVCurrentData;
 		Table UserData;
 
 		//Line BestFit;
@@ -13,7 +14,9 @@ namespace PrototypeV2
 		string a;
 		private bool ConnectPoints;
 		private bool UseExcel;
+		private bool UseCSV;
 		private bool RunningChart;
+		string fileStyle;
 		SqlConnection _connection;
 		public Home()
 		{
@@ -40,6 +43,7 @@ namespace PrototypeV2
 			RunningChart = false;
 			ConnectPoints = false;
 			UseExcel = true;
+			UseCSV = true;
 		}
 		static public double[] toCoordinate(string alpha, double[] dataX, double[] dataY)
 		{
@@ -61,8 +65,8 @@ namespace PrototypeV2
 
 				subString = alpha.Substring(eqIndex + 1, multIndex - (eqIndex + 1)).Trim();
 				m = double.Parse(subString);
-
 				int plusIndex = alpha.IndexOf("+");//index where '+' appears
+				
 				double c;
 				if (plusIndex == -1)
 				{
@@ -72,8 +76,7 @@ namespace PrototypeV2
 				{
 					c = double.Parse(subString);
 				}
-				subString = alpha.Substring(plusIndex + 1, 5);
-				//subString = subString.Substring(0,5);
+				subString = alpha.Substring(plusIndex);
 				c = double.Parse(subString);
 
 				//turns m and c into a straight line
@@ -105,7 +108,6 @@ namespace PrototypeV2
 			{
 				// $@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;"
 				SqlConnection myConn = new SqlConnection(path);
-				//eventually pull from XML settings to find connection string
 				myConn.Open();
 				MessageBox.Show("Database Connnection Established");
 				myConn.Close();
@@ -116,15 +118,21 @@ namespace PrototypeV2
 			{
 				try
 				{
-					SqlConnection myConn = new SqlConnection($@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;");
+					SqlConnection myConn = new SqlConnection(path);
 					myConn.Open();
-					SqlCommand createDB = new SqlCommand("CREATE DATABASE SystemTrackerDB;", myConn);
-					SqlCommand UseDB = new SqlCommand("USE SystemTrackerDB", myConn);
-					SqlCommand RunDDL = new SqlCommand(File.ReadAllText("createDB.sql"), myConn);
+					var createDB = myConn.CreateCommand();
+					createDB.CommandText = "CREATE DATABASE [SystemTrackerDB]";
+					createDB.ExecuteNonQuery();
+					var UseDB = myConn.CreateCommand();
+					UseDB.CommandText = "USE [SystemTrackerDB]";
+					UseDB.ExecuteNonQuery();
+					var RunDDL = myConn.CreateCommand();
+					RunDDL.CommandText = File.ReadAllText("createDB.sql");
+					RunDDL.ExecuteNonQuery();
+
 					createDB.ExecuteNonQuery();
 					UseDB.ExecuteNonQuery();
 					RunDDL.ExecuteNonQuery();
-					myConn.Close();
 					return myConn;
 				}
 
@@ -152,23 +160,53 @@ namespace PrototypeV2
 				//MessageBox.Show("ok");
 				if (FpkExcel.ShowDialog() == DialogResult.OK)
 				{
-					MessageBox.Show(FpkExcel.FileName, "Input File");
-					FilePath = FpkExcel.FileName;
-					CurrentData = new Excel(FilePath);
-					CurrentData.ReadWorkbook();
-					//MessageBox.Show(Convert.ToString(CurrentData.DataOut[0].X), "Data in 1st row, 1st column");
-					DgvCurrentData.ColumnCount = 2;
-					DgvCurrentData.Rows.Add(CurrentData.xtitle, CurrentData.ytitle);
-					for (int items = 0; items < CurrentData.DataOut.Count(); items++)
+					if (new FileInfo(FpkExcel.FileName).Extension == ".csv")
 					{
-						DgvCurrentData.Rows.Add(CurrentData.LocalColumn.Data[items].X, CurrentData.LocalColumn.Data[items].Y);
+						FilePath = FpkExcel.FileName;
+
+						MessageBox.Show(FilePath, "Input File");
+						CSVCurrentData = new Spreadsheet(FilePath);
+						CSVCurrentData.ReadSpreadsheet();
+						//MessageBox.Show(Convert.ToString(CurrentData.DataOut[0].X), "Data in 1st row, 1st column");
+						DgvCurrentData.ColumnCount = 2;
+						DgvCurrentData.Rows.Add(CSVCurrentData.xtitle, CSVCurrentData.ytitle);
+						for (int items = 0; items < CSVCurrentData.DataOut.Count(); items++)
+						{
+							DgvCurrentData.Rows.Add(CSVCurrentData.LocalColumn.Data[items].X, CSVCurrentData.LocalColumn.Data[items].Y);
+						}
+						UseCSV = true;
+						UseExcel = false;
+						fileStyle = "CSV";
+						DgvCurrentData.Refresh();
+						BtnRegress.Enabled = true;
+						BtnSort.Enabled = true;
+						BtnPrint.Enabled = true;
+						BtnView.Enabled = true;
+						chk_ConnectPoints.Enabled = true;
 					}
-					DgvCurrentData.Refresh();
-					BtnRegress.Enabled = true;
-					BtnSort.Enabled = true;
-					BtnPrint.Enabled = true;
-					BtnView.Enabled = true;
-					chk_ConnectPoints.Enabled = true;
+					else if (new FileInfo(FpkExcel.FileName).Extension == ".xlsx")
+					{
+						MessageBox.Show(FpkExcel.FileName, "Input File");
+						FilePath = FpkExcel.FileName;
+						CurrentData = new Excel(FilePath);
+						CurrentData.ReadWorkbook();
+						//MessageBox.Show(Convert.ToString(CurrentData.DataOut[0].X), "Data in 1st row, 1st column");
+						DgvCurrentData.ColumnCount = 2;
+						DgvCurrentData.Rows.Add(CurrentData.xtitle, CurrentData.ytitle);
+						for (int items = 0; items < CurrentData.DataOut.Count(); items++)
+						{
+							DgvCurrentData.Rows.Add(CurrentData.LocalColumn.Data[items].X, CurrentData.LocalColumn.Data[items].Y);
+						}
+						UseExcel = true;
+						UseCSV = false;
+						fileStyle = "Excel";
+						DgvCurrentData.Refresh();
+						BtnRegress.Enabled = true;
+						BtnSort.Enabled = true;
+						BtnPrint.Enabled = true;
+						BtnView.Enabled = true;
+						chk_ConnectPoints.Enabled = true;
+					}
 				}
 				else
 				{
@@ -200,6 +238,10 @@ namespace PrototypeV2
 			{
 				Data = CurrentData.LocalColumn;
 			}
+			else if (UseCSV == true)
+			{
+				Data = CSVCurrentData.LocalColumn;
+			}
 			else
 			{
 				Data = UserData;
@@ -228,17 +270,30 @@ namespace PrototypeV2
 		private void BtnRegress_Click(object sender, EventArgs e)
 		{
 			Table Data;
-			if (UseExcel == true)
+			if (fileStyle == "Excel")
 			{
 				Data = CurrentData.LocalColumn;
 			}
-			else
+			else if (fileStyle == "CSV")
+			{
+				Data = CSVCurrentData.LocalColumn;
+			}
+			else if (fileStyle == "User")
 			{
 				Data = UserData;
 			}
+			else
+			{
+				Coordinate first = new Coordinate(0, 0);
+				Coordinate second = new Coordinate(1, 1);
+				List<Coordinate> list = new List<Coordinate>();
+				list.Add(first);
+				list.Add(second);
+				Data = new Table(list, "error", "x", "y");
+			}
 			RunningChart = true;
 			string alpha = Data.Regress(Data.Data);
-			MessageBox.Show(alpha, "equation");
+			MessageBox.Show(alpha, Convert.ToString(Data.R2));
 			List<Coordinate> coordList = Data.Data;
 			double[] xValues = new double[coordList.Count];
 			double[] yValues = new double[coordList.Count];
@@ -344,6 +399,8 @@ namespace PrototypeV2
 				double x;
 				double y;
 				UseExcel = false;
+				UseCSV = false;
+				fileStyle = "User";
 				BtnRegress.Enabled = true;
 				BtnSort.Enabled = true;
 				BtnPrint.Enabled = true;

@@ -35,7 +35,6 @@ namespace PrototypeV2
 			double YIntercept;
 			//calculate line of best fit
 			//if there is an error, just use default values and throw an error
-
 			for (var i = 0; i < DataIn.Count; i++)
 			{
 				var x = Data[i].X;

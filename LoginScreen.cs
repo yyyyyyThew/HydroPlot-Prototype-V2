@@ -27,12 +27,12 @@ namespace Prototype_V2
 		{
 			//connect to the known good connection from Program.Home
 			Connection = conn;
-			
+
 			InitializeComponent();
 		}
 		private void txtUserID_TextChanged(object sender, EventArgs e)
 		{
-		//UserID here means the username field in the database
+			//UserID here means the username field in the database
 			userID = txtUserID.Text;
 		}
 
@@ -66,7 +66,7 @@ namespace Prototype_V2
 				{
 					TinyEncryption encryption = new TinyEncryption(passwordTry, key);
 					MessageBox.Show(encryption.Encrypt(), "Encrypted Password");//outputs hashed value
-					if (encryption.Encrypt() == hashedPassword)
+					if (TeaUtils.ToString(TeaUtils.Encrypt(key, TeaUtils.FromString(passwordTry))) == hashedPassword)
 					{
 
 						//find device name and id
@@ -88,7 +88,7 @@ namespace Prototype_V2
 
 						//find time
 						string timeStamp = DateTime.Now.ToString();
-						
+
 						//add device info
 						SqlCommand cmd = new SqlCommand($"INSERT INTO Sessions (session_timestamp, user_id, device_id) VALUES ('{timeStamp}', '{usernumber}' , '{DeviceID}')", Connection);
 						cmd.ExecuteNonQuery();
@@ -105,7 +105,8 @@ namespace Prototype_V2
 			{
 				MessageBox.Show(ex.ToString());
 			}
-
+			Connection.Close();
+			this.Close();
 
 		}
 
@@ -119,22 +120,47 @@ namespace Prototype_V2
 
 		}
 
+		//private void btn_SignUp_Click(object sender, EventArgs e)
+		//{
+		//	Connection.Open();
+		//	string testUser = "SuperUser";
+		//	string testPass = "password";
+		//	TinyEncryption encr = new TinyEncryption(testPass, key);
+		//	string hashedPass = encr.Encrypt();
+		//	string Query = $"INSERT INTO Users VALUES ('{testUser}', '{hashedPass}', 'Admin');";
+		//	SqlCommand CreateAccount = new SqlCommand(Query,Connection);
+		//	CreateAccount.ExecuteNonQuery();
+
+		//	string testDevice = Environment.MachineName.ToString();
+		//	Query = $"INSERT INTO Devices (device_name) VALUES ('{testDevice}')";
+		//	SqlCommand CreateDevice = new SqlCommand(Query,Connection);
+		//	CreateDevice.ExecuteNonQuery();
+		//	Connection.Close();
+		//}
 		private void btn_SignUp_Click(object sender, EventArgs e)
+
 		{
 			Connection.Open();
-			string testUser = "SuperUser";
-			string testPass = "password";
-			TinyEncryption encr = new TinyEncryption(testPass, key);
-			string hashedPass = encr.Encrypt();
-			string Query = $"INSERT INTO Users VALUES ('{testUser}', '{hashedPass}', 'Admin');";
-			SqlCommand CreateAccount = new SqlCommand(Query,Connection);
+			string testUser = "admin";
+			string testPassword = "password";
+			uint[] Salt = TeaUtils.GenerateSalt();
+			uint[] Key = TeaUtils.FromString(testPassword);
+			uint[] Value = TeaUtils.FromString(testUser);
+			string salt = TeaUtils.ToString(Salt);
+			string hashedPass = TeaUtils.ToString(TeaUtils.Encrypt(Key, Value));
+			string Query = $"INSERT INTO Users VALUES ('{testUser}', '{hashedPass}', '{salt}', 'Admin');";
+			SqlCommand CreateAccount = new SqlCommand(Query, Connection);
 			CreateAccount.ExecuteNonQuery();
-
 			string testDevice = Environment.MachineName.ToString();
 			Query = $"INSERT INTO Devices (device_name) VALUES ('{testDevice}')";
-			SqlCommand CreateDevice = new SqlCommand(Query,Connection);
+			SqlCommand CreateDevice = new SqlCommand(Query, Connection);
 			CreateDevice.ExecuteNonQuery();
 			Connection.Close();
+		}
+
+		private void btnOpenSettings_Click(object sender, EventArgs e)
+		{
+			new SettingsForm().Show();
 		}
 	}
 }

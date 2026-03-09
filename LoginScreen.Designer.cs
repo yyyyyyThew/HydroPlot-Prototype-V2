@@ -33,6 +33,7 @@
 			btnCancel = new Button();
 			btnLogin = new Button();
 			btn_SignUp = new Button();
+			btnOpenSettings = new Button();
 			SuspendLayout();
 			// 
 			// txtUserID
@@ -88,11 +89,22 @@
 			btn_SignUp.UseVisualStyleBackColor = true;
 			btn_SignUp.Click += btn_SignUp_Click;
 			// 
+			// btnOpenSettings
+			// 
+			btnOpenSettings.Location = new Point(0, 0);
+			btnOpenSettings.Name = "btnOpenSettings";
+			btnOpenSettings.Size = new Size(112, 34);
+			btnOpenSettings.TabIndex = 9;
+			btnOpenSettings.Text = "Settings";
+			btnOpenSettings.UseVisualStyleBackColor = true;
+			btnOpenSettings.Click += btnOpenSettings_Click;
+			// 
 			// LoginScreen
 			// 
 			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(1000, 562);
+			Controls.Add(btnOpenSettings);
 			Controls.Add(btn_SignUp);
 			Controls.Add(txtUserID);
 			Controls.Add(txtPassword);
@@ -113,5 +125,6 @@
 		private Button btnCancel;
 		private Button btnLogin;
 		private Button btn_SignUp;
+		private Button btnOpenSettings;
 	}
 }
