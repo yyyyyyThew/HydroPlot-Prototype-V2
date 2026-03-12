@@ -93,9 +93,17 @@ namespace PrototypeV2
 				{
 					index = dataX.Length;
 				}
-				double firstXVar = dataX[0];
+
+				List<Coordinate> list = new List<Coordinate>();
+				for (int i = 0; i < index - 1; i++)
+				{
+					list.Add(new Coordinate(dataX[i], dataY[i]));
+				}
+				list = Table.Sort(list);
+
+				double firstXVar = list.First().X;
 				double firstYVar = m * firstXVar + c;
-				double lastXVar = dataX[index - 1];
+				double lastXVar = list.Last().X;
 				double lastYVar = m * lastXVar + c;
 				return new double[] { firstXVar, firstYVar, lastXVar, lastYVar };
 			}
@@ -249,7 +257,7 @@ namespace PrototypeV2
 			List<Coordinate> SortedData = Data.Data;
 			try
 			{
-				SortedData = Data.Sort(Data.Data);
+				SortedData = Table.Sort(Data.Data);
 				Data.Data = SortedData;
 				MessageBox.Show("Data Sorted", "Task Complete");
 			}
@@ -292,7 +300,7 @@ namespace PrototypeV2
 				Data = new Table(list, "error", "x", "y");
 			}
 			RunningChart = true;
-			string alpha = Data.Regress(Data.Data);
+			string alpha = Table.Regress(Data.Data);
 			MessageBox.Show(alpha, Convert.ToString(Data.R2));
 			List<Coordinate> coordList = Data.Data;
 			double[] xValues = new double[coordList.Count];

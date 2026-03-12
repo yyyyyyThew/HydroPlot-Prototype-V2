@@ -43,7 +43,7 @@
 			txtUserID.Name = "txtUserID";
 			txtUserID.PlaceholderText = "User Name";
 			txtUserID.Size = new Size(242, 31);
-			txtUserID.TabIndex = 7;
+			txtUserID.TabIndex = 1;
 			txtUserID.TextChanged += txtUserID_TextChanged;
 			// 
 			// txtPassword
@@ -54,7 +54,7 @@
 			txtPassword.PasswordChar = '*';
 			txtPassword.PlaceholderText = "Password";
 			txtPassword.Size = new Size(242, 31);
-			txtPassword.TabIndex = 6;
+			txtPassword.TabIndex = 2;
 			txtPassword.TextChanged += txtPassword_TextChanged;
 			// 
 			// btnCancel
@@ -63,7 +63,7 @@
 			btnCancel.Margin = new Padding(4);
 			btnCancel.Name = "btnCancel";
 			btnCancel.Size = new Size(118, 36);
-			btnCancel.TabIndex = 5;
+			btnCancel.TabIndex = 4;
 			btnCancel.Text = "Cancel";
 			btnCancel.UseVisualStyleBackColor = true;
 			btnCancel.Click += btnCancel_Click;
@@ -74,7 +74,7 @@
 			btnLogin.Margin = new Padding(4);
 			btnLogin.Name = "btnLogin";
 			btnLogin.Size = new Size(118, 36);
-			btnLogin.TabIndex = 4;
+			btnLogin.TabIndex = 3;
 			btnLogin.Text = "Enter";
 			btnLogin.UseVisualStyleBackColor = true;
 			btnLogin.Click += btnLogin_Click;

@@ -32,6 +32,7 @@
 			btnInsert = new Button();
 			txtUserInput = new TextBox();
 			txtConnectionName = new TextBox();
+			textBox1 = new TextBox();
 			SuspendLayout();
 			// 
 			// XMLContents
@@ -71,11 +72,20 @@
 			txtConnectionName.Text = "Name";
 			txtConnectionName.TextChanged += txtConnectionName_TextChanged;
 			// 
+			// textBox1
+			// 
+			textBox1.Location = new Point(598, 12);
+			textBox1.Name = "textBox1";
+			textBox1.Size = new Size(190, 31);
+			textBox1.TabIndex = 4;
+			textBox1.TextChanged += textBox1_TextChanged;
+			// 
 			// SettingsForm
 			// 
 			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(800, 450);
+			Controls.Add(textBox1);
 			Controls.Add(txtConnectionName);
 			Controls.Add(txtUserInput);
 			Controls.Add(btnInsert);
@@ -92,5 +102,6 @@
 		private Button btnInsert;
 		private TextBox txtUserInput;
 		private TextBox txtConnectionName;
+		private TextBox textBox1;
 	}
 }

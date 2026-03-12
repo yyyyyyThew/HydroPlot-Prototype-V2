@@ -49,5 +49,10 @@ namespace Prototype_V2
 			ServerName = txtUserInput.Text;
 
 		}
+
+		private void textBox1_TextChanged(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

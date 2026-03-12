@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MathNet.Numerics.Interpolation;
 using NPOI;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace PrototypeV2
 {
@@ -15,12 +16,22 @@ namespace PrototypeV2
 		private string DataLabel;
 		public string XLabel { get; private set; }
 		public string YLabel { get; private set; }
-		public double R2 { get; private set; }
+		public double R2;
 		public List<Coordinate> Data = new List<Coordinate>();
 		//private List<Coordinate> LocalColumn = new List<Coordinate>();
 		public bool isLinear;
 		//public Line BestFit;
-		public string Regress(List<Coordinate> DataIn)
+		public Table(List<Coordinate> data, string datalabel, string xlabel, string ylabel)
+		{
+			R2 = 0;
+			Data = data;
+			DataLabel = datalabel;
+			XLabel = xlabel;
+			YLabel = ylabel;
+		}
+
+		public static string Regress(List<Coordinate> DataIn)
+		// return tuple with r2 value!!!!!
 		{
 			//defaults to a flat line that passes through (0,0)
 			double Gradient = 0;
@@ -37,15 +48,15 @@ namespace PrototypeV2
 			//if there is an error, just use default values and throw an error
 			for (var i = 0; i < DataIn.Count; i++)
 			{
-				var x = Data[i].X;
-				var y = Data[i].Y;
+				var x = DataIn[i].X;
+				var y = DataIn[i].Y;
 				CoDeviateSum += x * y;
 				SumX += x;
 				SumY += y;
 				SumXSquared += x * x;
 				SumYSquared += y * y;
 			}
-			int count = Data.Count;
+			int count = DataIn.Count;
 			double ssX = SumXSquared - ((SumX * SumX) / count);
 			double ssY = SumYSquared - ((SumY * SumY) / count);
 
@@ -61,18 +72,19 @@ namespace PrototypeV2
 			YIntercept = meanY - ((sCo / ssX) * meanX);
 			Gradient = sCo / ssX;
 			//if less than ~95, call LogLinear()
+
 			if (rsquared > 0.5)
 			{
-				LinearBestFit = new LinearLine(Gradient, YIntercept);
+				var LinearBestFit = new LinearLine(Gradient, YIntercept);
 				return LinearBestFit.Equation;
 			}
 			else
 			{
-				RegressLog(this.Data);
+				var LogBestFit = RegressLog(DataIn);
 				return "";
 			}
 		}
-		public string RegressLog(List<Coordinate> DataIn)
+		public static LogLine RegressLog(List<Coordinate> DataIn)
 		{
 			// Logarithmic Regression
 			double sumLogX = 0, sumLogXSq = 0, sumLogXY = 0;
@@ -97,9 +109,28 @@ namespace PrototypeV2
 
 			double b = (sumY - a * sumLogX) / count;  // Intercept
 			
-			LogBestFit = new LogLine(a, b);
-			return LogBestFit.Equation;
+			 return new LogLine(a, b);
 		}
+		public double Variance(List<Coordinate> input)
+		{
+			double x;
+			double sumX = 0;
+			double sXs = 0;//sum of the squares of x values
+			double meanX;//mean of x values
+			double meansXs;//mean of sXs values
+			double variance;
+
+			foreach (Coordinate point in input)
+			{
+				sumX += point.X;
+				sXs += Math.Pow(point.X, 2);
+			}
+			meanX = sumX / input.Count;
+			meansXs = sXs / input.Count;
+			variance = meansXs - Math.Pow(meanX, 2);
+			return variance;
+		}
+
 		public List<Coordinate> LogLinear()
 		{
 			//x -> log(x) and checks if the data is linearised.
@@ -134,7 +165,7 @@ namespace PrototypeV2
 		}
 
 		// Method to merge sort data (has 2 overloads, required to do the whole thang ong)
-		public List<Coordinate> Sort(List<Coordinate> Input)
+		static public List<Coordinate> Sort(List<Coordinate> Input)
 		{
 			if (Input.Count <= 1)
 				return Input; // Base case: return the list if it has only one element
@@ -161,7 +192,7 @@ namespace PrototypeV2
 			return Sort(left, right);
 			//return Input;
 		}
-		public List<Coordinate> Sort(List<Coordinate> left, List<Coordinate> right)
+		public static List<Coordinate> Sort(List<Coordinate> left, List<Coordinate> right)
 		{
 			List<Coordinate> result = new List<Coordinate>();
 
@@ -193,15 +224,6 @@ namespace PrototypeV2
 				}
 			}
 			return result;
-		}
-
-
-		public Table(List<Coordinate> data, string datalabel, string xlabel, string ylabel)
-		{
-			Data = data;
-			DataLabel = datalabel;
-			XLabel = xlabel;
-			YLabel = ylabel;
 		}
 	}
 }

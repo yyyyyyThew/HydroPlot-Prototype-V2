@@ -155,6 +155,7 @@ namespace Prototype_V2
 			Query = $"INSERT INTO Devices (device_name) VALUES ('{testDevice}')";
 			SqlCommand CreateDevice = new SqlCommand(Query, Connection);
 			CreateDevice.ExecuteNonQuery();
+			SqlCommand com = new SqlCommand("", Connection);
 			Connection.Close();
 		}
 
