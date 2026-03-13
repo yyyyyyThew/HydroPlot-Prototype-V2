@@ -19,7 +19,7 @@ namespace Prototype_V2
 	{
 		uint[] key = new uint[] { 0xA56BABCD, 0x0000FFFF, 0xABCDEF01, 0x12345678 };
 		// temp value before obfuscation
-		string userID = "";
+		string userID = "";// stored in database as username, usernumber refers to the database user_id field
 		string passwordTry = "";
 		string hashedPassword;
 		SqlConnection Connection;
@@ -94,6 +94,9 @@ namespace Prototype_V2
 						cmd.ExecuteNonQuery();
 						Connection.Close();
 						this.Close();
+						//welcome the user
+						//SQL Injection may happen here, so data is parameterised
+						MessageBox.Show("Welcome: " + userID);
 					}
 					else
 					{

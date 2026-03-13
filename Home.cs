@@ -21,11 +21,6 @@ namespace PrototypeV2
 		public Home()
 		{
 			InitializeComponent();
-			CustomComponents();
-		}
-		private bool goPaint;
-		private void CustomComponents()
-		{
 			string connectionString = @Settings.GetConnection("SG20");
 			MessageBox.Show(connectionString);
 			_connection = Connect(connectionString);
@@ -45,6 +40,8 @@ namespace PrototypeV2
 			UseExcel = true;
 			UseCSV = true;
 		}
+		private bool goPaint;
+		
 		static public double[] toCoordinate(string alpha, double[] dataX, double[] dataY)
 		{
 			//turns a string formatted regression line into coordinates
