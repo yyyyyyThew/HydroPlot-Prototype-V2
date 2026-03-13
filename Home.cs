@@ -300,8 +300,9 @@ namespace PrototypeV2
 				Data = new Table(list, "error", "x", "y");
 			}
 			RunningChart = true;
-			string alpha = Table.Regress(Data.Data);
-			MessageBox.Show(alpha, Convert.ToString(Data.R2));
+			(string Expression, double RSquared) regressedData = Table.Regress(Data.Data);
+
+			MessageBox.Show(regressedData.Expression, Convert.ToString(regressedData.RSquared));
 			List<Coordinate> coordList = Data.Data;
 			double[] xValues = new double[coordList.Count];
 			double[] yValues = new double[coordList.Count];
@@ -314,9 +315,9 @@ namespace PrototypeV2
 			}
 			x = xValues;
 			y = yValues;
-			a = alpha;
+			a = regressedData.Expression;
 			//uses the override that allows axis labels
-			pltHome_Paint(xValues, yValues, alpha, Data.XLabel, Data.YLabel, "RiverFlow");
+			pltHome_Paint(xValues, yValues, regressedData.Expression, Data.XLabel, Data.YLabel, "RiverFlow");
 
 		}
 		//base method can be used if no axis labels are included

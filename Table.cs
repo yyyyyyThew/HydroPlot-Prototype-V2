@@ -16,21 +16,19 @@ namespace PrototypeV2
 		private string DataLabel;
 		public string XLabel { get; private set; }
 		public string YLabel { get; private set; }
-		public double R2;
 		public List<Coordinate> Data = new List<Coordinate>();
 		//private List<Coordinate> LocalColumn = new List<Coordinate>();
 		public bool isLinear;
 		//public Line BestFit;
 		public Table(List<Coordinate> data, string datalabel, string xlabel, string ylabel)
 		{
-			R2 = 0;
 			Data = data;
 			DataLabel = datalabel;
 			XLabel = xlabel;
 			YLabel = ylabel;
 		}
 
-		public static string Regress(List<Coordinate> DataIn)
+		public static (string, double) Regress(List<Coordinate> DataIn)
 		// return tuple with r2 value!!!!!
 		{
 			//defaults to a flat line that passes through (0,0)
@@ -76,40 +74,55 @@ namespace PrototypeV2
 			if (rsquared > 0.5)
 			{
 				var LinearBestFit = new LinearLine(Gradient, YIntercept);
-				return LinearBestFit.Equation;
+				return (LinearBestFit.Equation, rsquared);
 			}
 			else
 			{
 				var LogBestFit = RegressLog(DataIn);
-				return "";
+				return LogBestFit;
 			}
 		}
-		public static LogLine RegressLog(List<Coordinate> DataIn)
+		public static string Regress(List<Coordinate> DataIn, string LogBase)
+		{
+			//defaults to a flat line that passes through (0,0)
+			double Gradient = 0;
+			double a = 0;
+			double b = 0;
+			double SumX = 0;
+			double SumY = 0;
+			double SumXSquared = 0;
+			double SumYSquared = 0;
+			double CoDeviateSum = 0;
+			double rsquared;
+			double YIntercept;
+			//calculate line of best fit
+			//if there is an error, just use default values and throw an error
+			for (var i = 0; i < DataIn.Count; i++)
+			{
+				var x = DataIn[i].X;
+				var y = DataIn[i].Y;
+				CoDeviateSum += x * y;
+				SumX += x;
+				SumY += y;
+				SumXSquared += x * x;
+				SumYSquared += y * y;
+			}
+			int count = DataIn.Count;
+			double ssX = SumXSquared - ((SumX * SumX) / count);
+			double ssY = SumYSquared - ((SumY * SumY) / count);
+			double sCo = CoDeviateSum - ((SumX * SumY) / count);
+			double meanX = SumX / count;
+			double meanY = SumY / count;
+			YIntercept = meanY - ((sCo / ssX) * meanX);
+			Gradient = sCo / ssX;
+			return new LinearLine(Gradient, YIntercept).Equation;
+
+		}
+		public static (string, double) RegressLog(List<Coordinate> DataIn)
 		{
 			// Logarithmic Regression
-			double sumLogX = 0, sumLogXSq = 0, sumLogXY = 0;
-			double sumY = 0;
-			int count = DataIn.Count;
-
-			foreach (Coordinate point in DataIn)
-			{
-				double x = point.X;
-				double y = point.Y;
-				double logX = Math.Log(x);  // Taking the logarithm of x
-
-				sumLogX += logX;
-				sumLogXSq += logX * logX;
-				sumLogXY += logX * y;
-				sumY += y;
-			}
-
-			double aNumerator = count * sumLogXY - sumLogX * sumY;
-			double aDenominator = count * sumLogXSq - sumLogX * sumLogX;
-			double a = aNumerator / aDenominator;
-
-			double b = (sumY - a * sumLogX) / count;  // Intercept
-			
-			 return new LogLine(a, b);
+			List<Coordinate> LinearisedData = LogLinear(DataIn);
+			return (Regress(LinearisedData, "10"), 0);
 		}
 		public double Variance(List<Coordinate> input)
 		{
@@ -131,17 +144,17 @@ namespace PrototypeV2
 			return variance;
 		}
 
-		public List<Coordinate> LogLinear()
+		public static List<Coordinate> LogLinear(List<Coordinate> LogData)
 		{
 			//x -> log(x) and checks if the data is linearised.
 			//if the data is close enough to linear (r~=0.95) then it creates a LogLine object
 			//else, it throws a fun little warning
-			List<Coordinate> LinearisedData = DeepCopy(this.Data).Data;
-			for (int items = 0; items < LinearisedData.Count; items++)
+			List<Coordinate> LinearisedData = new List<Coordinate>();
+			for (int items = 0; items < LogData.Count; items++)
 			{
-				LinearisedData[items].X = Math.Log10(LinearisedData[items].X);
+				LinearisedData[items].X = Math.Log10(LogData[items].X);
 			}
-			isLinear = false;
+			//isLinear = false;
 			return LinearisedData;
 			//Regress(LinearisedData);
 		}
