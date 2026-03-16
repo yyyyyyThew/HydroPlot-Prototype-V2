@@ -124,7 +124,7 @@ namespace PrototypeV2
 			List<Coordinate> LinearisedData = LogLinear(DataIn);
 			return (Regress(LinearisedData, "10"), 0);
 		}
-		public double Variance(List<Coordinate> input)
+		public static double Variance(List<Coordinate> input)
 		{
 			double x;
 			double sumX = 0;
@@ -143,7 +143,7 @@ namespace PrototypeV2
 			variance = meansXs - Math.Pow(meanX, 2);
 			return variance;
 		}
-
+			
 		public static List<Coordinate> LogLinear(List<Coordinate> LogData)
 		{
 			//x -> log(x) and checks if the data is linearised.

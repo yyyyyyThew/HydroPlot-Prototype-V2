@@ -297,9 +297,15 @@ namespace PrototypeV2
 				Data = new Table(list, "error", "x", "y");
 			}
 			RunningChart = true;
-			(string Expression, double RSquared) regressedData = Table.Regress(Data.Data);
 
-			MessageBox.Show(regressedData.Expression, Convert.ToString(regressedData.RSquared));
+			//turns data into values usable for analysis.
+			//as correlation means nothing without a line of best fit, the two datapoints are superglued together in a tuple
+			//a  correlation of 0 means there is no LINEAR correlation
+			(string Expression, double RSquared) regressedData = Table.Regress(Data.Data);
+			//standard deviation = variance squared, so theres no need for a second method here
+			double SDev = Math.Pow(Table.Variance(Data.Data), 2);
+
+			MessageBox.Show("Expression: " + regressedData.Expression + "\nR squared: " + Convert.ToString(regressedData.RSquared + "\nStandard Deviation: " + SDev.ToString()));
 			List<Coordinate> coordList = Data.Data;
 			double[] xValues = new double[coordList.Count];
 			double[] yValues = new double[coordList.Count];
