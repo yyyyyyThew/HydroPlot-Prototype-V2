@@ -11,6 +11,7 @@ namespace PrototypeV2
 
 		//Line BestFit;
 		double[] x, y;
+		string XLabel, YLabel;
 		string a;
 		private bool ConnectPoints;
 		private bool UseExcel;
@@ -198,6 +199,8 @@ namespace PrototypeV2
 						//MessageBox.Show(Convert.ToString(CurrentData.DataOut[0].X), "Data in 1st row, 1st column");
 						DgvCurrentData.ColumnCount = 2;
 						DgvCurrentData.Rows.Add(CurrentData.xtitle, CurrentData.ytitle);
+						XLabel = CurrentData.xtitle;
+						YLabel = CurrentData.ytitle;
 						for (int items = 0; items < CurrentData.DataOut.Count(); items++)
 						{
 							DgvCurrentData.Rows.Add(CurrentData.LocalColumn.Data[items].X, CurrentData.LocalColumn.Data[items].Y);
@@ -399,7 +402,7 @@ namespace PrototypeV2
 		{
 			if (RunningChart)
 			{
-				GraphView Viewer = new GraphView(x, y, a, ConnectPoints);
+				GraphView Viewer = new GraphView(x, y, a, ConnectPoints, XLabel, YLabel);
 				Viewer.Show();
 			}
 		}

@@ -32,6 +32,8 @@
 			btn_SavePng = new Button();
 			btn_Leave = new Button();
 			SAV_SaveFile = new SaveFileDialog();
+			btn_Export = new Button();
+			SAV_ExportTable = new SaveFileDialog();
 			SuspendLayout();
 			// 
 			// GV_FullscreenView
@@ -67,11 +69,26 @@
 			// 
 			SAV_SaveFile.FileOk += SAV_SaveFile_FileOk;
 			// 
+			// btn_Export
+			// 
+			btn_Export.Location = new Point(1764, 12);
+			btn_Export.Name = "btn_Export";
+			btn_Export.Size = new Size(112, 34);
+			btn_Export.TabIndex = 3;
+			btn_Export.Text = "Export";
+			btn_Export.UseVisualStyleBackColor = true;
+			btn_Export.Click += btn_Export_Click;
+			// 
+			// SAV_ExportTable
+			// 
+			SAV_ExportTable.FileOk += SAV_ExportTable_FileOk;
+			// 
 			// GraphView
 			// 
 			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(1898, 1024);
+			Controls.Add(btn_Export);
 			Controls.Add(btn_Leave);
 			Controls.Add(btn_SavePng);
 			Controls.Add(GV_FullscreenView);
@@ -87,5 +104,7 @@
 		private Button btn_SavePng;
 		private Button btn_Leave;
 		private SaveFileDialog SAV_SaveFile;
+		private Button btn_Export;
+		private SaveFileDialog SAV_ExportTable;
 	}
 }
