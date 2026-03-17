@@ -42,7 +42,6 @@ namespace Prototype_V2
 		private void GV_FullscreenView_Load(object sender, EventArgs e)
 		{
 
-
 		}
 
 		private void btn_SavePng_Click(object sender, EventArgs e)
@@ -75,7 +74,8 @@ namespace Prototype_V2
 			Coordinates pt1 = new Coordinates(points[0], points[1]);
 			Coordinates pt2 = new Coordinates(points[2], points[3]);
 			var line = GV_FullscreenView.Plot.Add.Line(pt1, pt2);
-
+			GV_FullscreenView.Plot.XLabel(xaxis);
+			GV_FullscreenView.Plot.YLabel(yaxis);
 			if (ConnectPoints == true)
 			{
 				GV_FullscreenView.Plot.Add.Scatter(dataX, dataY);

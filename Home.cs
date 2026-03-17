@@ -45,68 +45,76 @@ namespace PrototypeV2
 		
 		static public double[] toCoordinate(string alpha, double[] dataX, double[] dataY)
 		{
-			//turns a string formatted regression line into coordinates
-			//returns the limits where interpolation is possible
-			Coordinate max;
-			Coordinate min;
-			string subString;
-			int eqIndex = alpha.IndexOf('=');//index where '=' appears
-			int multIndex = alpha.IndexOf('x');//and 'x'
-			double m;
-			if (eqIndex == -1 || multIndex == -1)
+		try
 			{
-				MessageBox.Show("Not in correct Format", "Error");
-				//throw new Exception("Invalid format");
-			}
-			else
-			{
-
-				subString = alpha.Substring(eqIndex + 1, multIndex - (eqIndex + 1)).Trim();
-				m = double.Parse(subString);
-				int plusIndex = alpha.IndexOf("+");//index where '+' appears
-				
-				double c;
-				if (plusIndex == -1)
+				//turns a string formatted regression line into coordinates
+				//returns the limits where interpolation is possible
+				Coordinate max;
+				Coordinate min;
+				string subString;
+				int eqIndex = alpha.IndexOf('=');//index where '=' appears
+				int multIndex = alpha.IndexOf('x');//and 'x'
+				double m;
+				if (eqIndex == -1 || multIndex == -1)
 				{
+					MessageBox.Show("Not in correct Format", "Error");
 					//throw new Exception("Invalid format");
 				}
 				else
 				{
+
+					subString = alpha.Substring(eqIndex + 1, multIndex - (eqIndex + 1)).Trim();
+					m = double.Parse(subString);
+					int plusIndex = alpha.IndexOf("+");//index where '+' appears
+
+					double c;
+					if (plusIndex == -1)
+					{
+						//throw new Exception("Invalid format");
+					}
+					else
+					{
+						c = double.Parse(subString);
+					}
+					subString = alpha.Substring(plusIndex);
 					c = double.Parse(subString);
-				}
-				subString = alpha.Substring(plusIndex);
-				c = double.Parse(subString);
 
-				//turns m and c into a straight line
-				int index;
-				if (dataX.Length <= dataY.Length)
-				{
-					index = dataX.Length;
-				}
-				else if (dataX.Length >= dataY.Length)
-				{
-					index = dataY.Length;
-				}
-				else
-				{
-					index = dataX.Length;
-				}
+					//turns m and c into a straight line
+					int index;
+					if (dataX.Length <= dataY.Length)
+					{
+						index = dataX.Length;
+					}
+					else if (dataX.Length >= dataY.Length)
+					{
+						index = dataY.Length;
+					}
+					else
+					{
+						index = dataX.Length;
+					}
 
-				List<Coordinate> list = new List<Coordinate>();
-				for (int i = 0; i < index - 1; i++)
-				{
-					list.Add(new Coordinate(dataX[i], dataY[i]));
-				}
-				list = Table.Sort(list);
+					List<Coordinate> list = new List<Coordinate>();
+					for (int i = 0; i < index - 1; i++)
+					{
+						list.Add(new Coordinate(dataX[i], dataY[i]));
+					}
+					list = Table.Sort(list);
 
-				double firstXVar = list.First().X;
-				double firstYVar = m * firstXVar + c;
-				double lastXVar = list.Last().X;
-				double lastYVar = m * lastXVar + c;
-				return new double[] { firstXVar, firstYVar, lastXVar, lastYVar };
+					double firstXVar = list.First().X;
+					double firstYVar = m * firstXVar + c;
+					double lastXVar = list.Last().X;
+					double lastYVar = m * lastXVar + c;
+					return new double[] { firstXVar, firstYVar, lastXVar, lastYVar };
+				}
 			}
-			//returns the origin twice if the equation is not in correct format
+			catch
+			{
+				//returns the origin twice if the equation is not in correct format
+				MessageBox.Show("Some input values were not real numbers");
+			}
 			return new double[] { 0, 0, 0, 0 };
+
 		}
 		static private SqlConnection Connect(string path)
 		{
