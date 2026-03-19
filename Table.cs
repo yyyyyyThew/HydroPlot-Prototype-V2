@@ -11,6 +11,7 @@ namespace PrototypeV2
 {
 	class Table
 	{
+		private const double EulerConst = Math.E;
 		public LogLine LogBestFit;
 		public LinearLine LinearBestFit;
 		private string DataLabel;
@@ -78,7 +79,7 @@ namespace PrototypeV2
 			}
 			else
 			{
-				var LogBestFit = RegressLog(DataIn);
+				var LogBestFit = RegressLog(DataIn, "10");
 				return LogBestFit;
 			}
 		}
@@ -118,12 +119,33 @@ namespace PrototypeV2
 			return new LinearLine(Gradient, YIntercept).Equation;
 
 		}
-		public static (string, double) RegressLog(List<Coordinate> DataIn)
+		public static (string, double) RegressLog(List<Coordinate> DataIn, string Base)
 		{
+			List<Coordinate> LinearisedData;
+			switch (Base)
+			{
+				case "e":
+					{
+						LinearisedData = LogLinear(DataIn, EulerConst);
+						break;
+					}
+				case "10":
+					{
+						LinearisedData = LogLinear(DataIn, 10);
+						break;
+					}
+				default:
+					{
+						LinearisedData = LogLinear(DataIn, 10);
+						break;
+					}
+			}
+		
+	
 			// Logarithmic Regression
-			List<Coordinate> LinearisedData = LogLinear(DataIn);
 			return (Regress(LinearisedData, "10"), 0);
 		}
+
 		public static double Variance(List<Coordinate> input)
 		{
 			double x;
@@ -144,7 +166,7 @@ namespace PrototypeV2
 			return variance;
 		}
 			
-		public static List<Coordinate> LogLinear(List<Coordinate> LogData)
+		public static List<Coordinate> LogLinear(List<Coordinate> LogData, double Base)
 		{
 			//x -> log(x) and checks if the data is linearised.
 			//if the data is close enough to linear (r~=0.95) then it creates a LogLine object
@@ -152,7 +174,8 @@ namespace PrototypeV2
 			List<Coordinate> LinearisedData = new List<Coordinate>();
 			for (int items = 0; items < LogData.Count; items++)
 			{
-				LinearisedData[items].X = Math.Log10(LogData[items].X);
+				//LinearisedData[items].X = Math.Log10(LogData[items].X);
+				LinearisedData[items].X = Math.Log(LogData[items].X, Base);
 			}
 			//isLinear = false;
 			return LinearisedData;
