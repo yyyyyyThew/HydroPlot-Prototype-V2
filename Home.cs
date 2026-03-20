@@ -314,9 +314,10 @@ namespace PrototypeV2
 			//a  correlation of 0 means there is no LINEAR correlation
 			(string Expression, double RSquared) regressedData = Table.Regress(Data.Data);
 			//standard deviation = variance squared, so theres no need for a second method here
-			double SDev = Math.Pow(Table.Variance(Data.Data), 2);
+			double SDev = Math.Sqrt(Table.Variance(Data.Data));
+			double median = Table.Median(Table.Sort(Data.Data));
 
-			MessageBox.Show("Expression: " + regressedData.Expression + "\nR squared: " + Convert.ToString(regressedData.RSquared + "\nStandard Deviation: " + SDev.ToString()));
+			MessageBox.Show("Expression: " + regressedData.Expression + "\nR squared: " + Convert.ToString(regressedData.RSquared + "\nStandard Deviation: " + SDev.ToString() + $"\nMedian flow for {Data.XLabel}: " + median));
 			List<Coordinate> coordList = Data.Data;
 			double[] xValues = new double[coordList.Count];
 			double[] yValues = new double[coordList.Count];

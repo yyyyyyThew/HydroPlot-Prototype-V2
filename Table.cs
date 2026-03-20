@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MathNet.Numerics.Interpolation;
 using NPOI;
+using Prototype_V2;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace PrototypeV2
@@ -146,6 +147,22 @@ namespace PrototypeV2
 			return (Regress(LinearisedData, "10"), 0);
 		}
 
+		public static List<Coordinate> LogLinear(List<Coordinate> LogData, double Base)
+		{
+			//x -> log(x) and checks if the data is linearised.
+			//if the data is close enough to linear (r~=0.95) then it creates a LogLine object
+			//else, it throws a fun little warning
+			List<Coordinate> LinearisedData = new List<Coordinate>();
+			for (int items = 0; items < LogData.Count; items++)
+			{
+				//LinearisedData[items].X = Math.Log10(LogData[items].X);
+				LinearisedData[items].X = Math.Log(LogData[items].X, Base);
+			}
+			//isLinear = false;
+			return LinearisedData;
+			//Regress(LinearisedData);
+		}
+
 		public static double Variance(List<Coordinate> input)
 		{
 			double x;
@@ -165,21 +182,14 @@ namespace PrototypeV2
 			variance = meansXs - Math.Pow(meanX, 2);
 			return variance;
 		}
-			
-		public static List<Coordinate> LogLinear(List<Coordinate> LogData, double Base)
+		public static double Median(List<Coordinate> input)
 		{
-			//x -> log(x) and checks if the data is linearised.
-			//if the data is close enough to linear (r~=0.95) then it creates a LogLine object
-			//else, it throws a fun little warning
-			List<Coordinate> LinearisedData = new List<Coordinate>();
-			for (int items = 0; items < LogData.Count; items++)
-			{
-				//LinearisedData[items].X = Math.Log10(LogData[items].X);
-				LinearisedData[items].X = Math.Log(LogData[items].X, Base);
-			}
-			//isLinear = false;
-			return LinearisedData;
-			//Regress(LinearisedData);
+			double midpoint;
+			int centre = input.Count;
+			centre = centre / 2;
+			midpoint = input[centre].X;
+			midpoint = midpoint + input[centre + 1].X;
+			return midpoint;
 		}
 
 		public string Print(int Index)
