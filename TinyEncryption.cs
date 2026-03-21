@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using MathNet.Numerics.Random;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace Prototype_V2
 			v[1] = z;
 			return v;
 		}
-		private static uint[] Decrypt(uint[] key, uint[] hash)
+		protected static uint[] Decrypt(uint[] key, uint[] hash)
 		{
 			uint delta = 0x9e3779b9;
 			uint[] v = hash;
@@ -89,10 +90,10 @@ namespace Prototype_V2
 			//used to create a pseudo random seed that can be used to add randomness to user keys
 			//stored SECURELY per-user - they need BOTH the key AND the salt to login
 			uint[] result = new uint[4]; //filled with random bytes -> uints 
-			result[0] = Convert.ToUInt32(RandomNumberGenerator.GetBytes(4));
-			result[1] = Convert.ToUInt32(RandomNumberGenerator.GetBytes(4));
-			result[2] = Convert.ToUInt32(RandomNumberGenerator.GetBytes(4));
-			result[3] = Convert.ToUInt32(RandomNumberGenerator.GetBytes(4));
+			for (int i = 0; i < result.Length; i++)
+			{
+				 result[i] = Convert.ToUInt32(new Random().Next());
+			}
 			return result;
 		}
 		//the user provides a key and a salt, to which xor is applied to create a more entropic key
@@ -114,7 +115,7 @@ namespace Prototype_V2
 		}
 		// reversible quality of xor - as A = B XOR C implies B = A XOR C
 		//this means the salted key and user key (the password) can be used to find the original salt
-		public uint[] UndoSalt(uint[] key, uint[] saltedKey)
+		public static uint[] UndoSalt(uint[] key, uint[] saltedKey)
 		{
 			uint[] salt = new uint[4];
 			int i = 0;
@@ -128,7 +129,7 @@ namespace Prototype_V2
 			}
 			return salt;
 		}
-		public uint[] GetSalt(string User)
+		public static uint[] GetSalt(string User)
 		{
 			string Salt = "";
 			uint[] UserKey = new uint[4];

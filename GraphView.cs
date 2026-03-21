@@ -19,22 +19,28 @@ namespace Prototype_V2
 	public partial class GraphView : Form
 	{
 		private double[] x;
+		private string title;
+		private string xaxis;
+		private string yaxis;
 		private double[] y;
 		private string a;
 		bool connectpoints;
-		public GraphView(double[] dataX, double[] dataY, string alpha, bool ConnectPoints)
+		public GraphView(double[] dataX, double[] dataY, string alpha, bool ConnectPoints, string XTitle, string YTitle)
 		{
 			x = dataX;
 			y = dataY;
 			a = alpha;
+			xaxis = XTitle;
+			yaxis = YTitle;
 			connectpoints = ConnectPoints;
 			InitializeComponent();
+			SAV_ExportTable.Filter = "Spreadsheet File(*.CSV)|*.CSV|All files (*.*)|*.*";
+			SAV_SaveFile.Filter = "Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
 			pltView_Paint(x, y, a, connectpoints);
 		}
 
 		private void GV_FullscreenView_Load(object sender, EventArgs e)
 		{
-
 
 		}
 
@@ -68,7 +74,8 @@ namespace Prototype_V2
 			Coordinates pt1 = new Coordinates(points[0], points[1]);
 			Coordinates pt2 = new Coordinates(points[2], points[3]);
 			var line = GV_FullscreenView.Plot.Add.Line(pt1, pt2);
-
+			GV_FullscreenView.Plot.XLabel(xaxis);
+			GV_FullscreenView.Plot.YLabel(yaxis);
 			if (ConnectPoints == true)
 			{
 				GV_FullscreenView.Plot.Add.Scatter(dataX, dataY);
@@ -91,6 +98,42 @@ namespace Prototype_V2
 		}
 
 		private void GraphView_Load(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btn_Export_Click(object sender, EventArgs e)
+		{
+			string filepath;
+			double[] XVars = x;
+			double[] YVars = y;
+			if (SAV_ExportTable.ShowDialog() == DialogResult.OK)
+			{
+				try
+				{
+					filepath = SAV_ExportTable.FileName;
+
+					var csv = new StringBuilder();
+					csv.AppendLine($"{xaxis}, {yaxis}");
+	
+					for (int i = 0; i < XVars.Length; i++)
+					{
+						csv.AppendLine($"{XVars[i]}, {YVars[i]}");
+					}
+
+					File.WriteAllText(filepath, csv.ToString());
+					MessageBox.Show("Saved to: " + filepath);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.ToString(), "Error");
+				}
+			}
+
+			
+		}
+
+		private void SAV_ExportTable_FileOk(object sender, CancelEventArgs e)
 		{
 
 		}

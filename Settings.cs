@@ -2,12 +2,36 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using System.Xml;
 
 namespace Prototype_V2
 {
 	internal class Settings
 	{
-
+		public static string ReadAll()
+		{
+			string outstring = "";
+			XDocument doc = XDocument.Load("appSettings.xml");
+			XmlReader reader = doc.CreateReader();
+				while (reader.Read())
+				{
+					switch (reader.NodeType)
+					{
+						case XmlNodeType.Element: // The node is an element.
+							outstring += reader.Name + ": \n";
+						while (reader.MoveToNextAttribute()) // Read the attributes.
+							outstring += (reader.Name + "='" + reader.Value + "'\n");
+							break;
+						case XmlNodeType.Text: //Display the text in each element.
+							outstring += reader.Value;
+							break;
+						case XmlNodeType.EndElement: //Display the end of the element.
+							outstring += reader.Name;
+							break;
+					}
+				}
+				return outstring;
+			}
 		public static void AddConnection(string key, string value)
 		{
 			XDocument doc = XDocument.Load("appSettings.xml");

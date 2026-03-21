@@ -143,7 +143,7 @@
 			// 
 			// BtnPrint
 			// 
-			BtnPrint.Location = new Point(505, 59);
+			BtnPrint.Location = new Point(867, 513);
 			BtnPrint.Margin = new Padding(4);
 			BtnPrint.Name = "BtnPrint";
 			BtnPrint.Size = new Size(118, 36);

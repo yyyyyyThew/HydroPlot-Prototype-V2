@@ -15,6 +15,7 @@ BEGIN
         user_id INT PRIMARY KEY IDENTITY,
         username VARCHAR(50) NOT NULL UNIQUE,
 		hashed_password VARCHAR(255) NOT NULL,
+		user_salt VARCHAR(255),
         access_level VARCHAR(20) NOT NULL
     );
 END

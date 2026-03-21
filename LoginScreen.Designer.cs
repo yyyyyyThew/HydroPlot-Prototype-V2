@@ -33,6 +33,7 @@
 			btnCancel = new Button();
 			btnLogin = new Button();
 			btn_SignUp = new Button();
+			btnOpenSettings = new Button();
 			SuspendLayout();
 			// 
 			// txtUserID
@@ -42,7 +43,7 @@
 			txtUserID.Name = "txtUserID";
 			txtUserID.PlaceholderText = "User Name";
 			txtUserID.Size = new Size(242, 31);
-			txtUserID.TabIndex = 7;
+			txtUserID.TabIndex = 1;
 			txtUserID.TextChanged += txtUserID_TextChanged;
 			// 
 			// txtPassword
@@ -53,7 +54,7 @@
 			txtPassword.PasswordChar = '*';
 			txtPassword.PlaceholderText = "Password";
 			txtPassword.Size = new Size(242, 31);
-			txtPassword.TabIndex = 6;
+			txtPassword.TabIndex = 2;
 			txtPassword.TextChanged += txtPassword_TextChanged;
 			// 
 			// btnCancel
@@ -62,7 +63,7 @@
 			btnCancel.Margin = new Padding(4);
 			btnCancel.Name = "btnCancel";
 			btnCancel.Size = new Size(118, 36);
-			btnCancel.TabIndex = 5;
+			btnCancel.TabIndex = 4;
 			btnCancel.Text = "Cancel";
 			btnCancel.UseVisualStyleBackColor = true;
 			btnCancel.Click += btnCancel_Click;
@@ -73,7 +74,7 @@
 			btnLogin.Margin = new Padding(4);
 			btnLogin.Name = "btnLogin";
 			btnLogin.Size = new Size(118, 36);
-			btnLogin.TabIndex = 4;
+			btnLogin.TabIndex = 3;
 			btnLogin.Text = "Enter";
 			btnLogin.UseVisualStyleBackColor = true;
 			btnLogin.Click += btnLogin_Click;
@@ -88,11 +89,22 @@
 			btn_SignUp.UseVisualStyleBackColor = true;
 			btn_SignUp.Click += btn_SignUp_Click;
 			// 
+			// btnOpenSettings
+			// 
+			btnOpenSettings.Location = new Point(0, 0);
+			btnOpenSettings.Name = "btnOpenSettings";
+			btnOpenSettings.Size = new Size(112, 34);
+			btnOpenSettings.TabIndex = 9;
+			btnOpenSettings.Text = "Settings";
+			btnOpenSettings.UseVisualStyleBackColor = true;
+			btnOpenSettings.Click += btnOpenSettings_Click;
+			// 
 			// LoginScreen
 			// 
 			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(1000, 562);
+			Controls.Add(btnOpenSettings);
 			Controls.Add(btn_SignUp);
 			Controls.Add(txtUserID);
 			Controls.Add(txtPassword);
@@ -113,5 +125,6 @@
 		private Button btnCancel;
 		private Button btnLogin;
 		private Button btn_SignUp;
+		private Button btnOpenSettings;
 	}
 }
