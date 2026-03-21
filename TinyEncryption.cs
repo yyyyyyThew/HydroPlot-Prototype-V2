@@ -11,7 +11,7 @@ namespace Prototype_V2
 {
 	class TeaUtils
 	{
-		static uint[] Encrypt(uint[] key, uint[] value)
+		public static uint[] Encrypt(uint[] key, uint[] value)
 		{
 			uint delta = 0x9e3779b9;
 			uint[] v = value;
@@ -33,7 +33,7 @@ namespace Prototype_V2
 			v[1] = z;
 			return v;
 		}
-		static uint[] Decrypt(uint[] key, uint[] hash)
+		private static uint[] Decrypt(uint[] key, uint[] hash)
 		{
 			uint delta = 0x9e3779b9;
 			uint[] v = hash;
@@ -56,7 +56,7 @@ namespace Prototype_V2
 			v[1] = z;
 			return v;
 		}
-		public string ToString(uint[] Unsigned)
+		public static string ToString(uint[] Unsigned)
 		{
 			string Result = "";
 			foreach (uint value in Unsigned)//works for long strings, but methods only address the first 128 bits as a key
@@ -71,7 +71,7 @@ namespace Prototype_V2
 
 		}
 		//used to turn a user password into a key that can be accepted by the algorithm
-		public uint[] FromString(string Source)
+		public static uint[] FromString(string Source)
 		{
 			Encoding ascii = Encoding.ASCII;
 			byte[] bytes = ascii.GetBytes(Source);
@@ -84,7 +84,7 @@ namespace Prototype_V2
 			return Unsigned;
 		}
 		// GemerateSalt() creates an 128 bit encryption salt
-		public uint[] GenerateSalt()
+		public static uint[] GenerateSalt()
 		{
 			//used to create a pseudo random seed that can be used to add randomness to user keys
 			//stored SECURELY per-user - they need BOTH the key AND the salt to login
@@ -96,7 +96,7 @@ namespace Prototype_V2
 			return result;
 		}
 		//the user provides a key and a salt, to which xor is applied to create a more entropic key
-		public uint[] ApplySalt(string userkey, uint[] salt)
+		public static uint[] ApplySalt(string userkey, uint[] salt)
 		{
 			//bitwise xor on each 8 bit uint 
 			uint[] key = FromString(userkey);

@@ -21,5 +21,6 @@
 	</appConfig>
 	<connectionString>
 		<add key="SG20" value="Server=A240392\SQLEXPRESS;TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB"/>
+		<add key="Home" value="Data Source=(localdb)\testDB;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False"/>
 	</connectionString>
 </settings>

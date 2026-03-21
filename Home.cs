@@ -23,7 +23,7 @@ namespace PrototypeV2
 		private bool goPaint;
 		private void CustomComponents()
 		{
-			string connectionString = @Settings.GetConnection("SG20");
+			string connectionString = @Settings.GetConnection("Home");
 			MessageBox.Show(connectionString);
 			_connection = Connect(connectionString);
 			//set the filter for the file pick dialogue
