@@ -17,7 +17,7 @@ namespace Prototype_V2
 {
 	public partial class LoginScreen : Form
 	{
-		uint[] key = new uint[] { 0xA56BABCD, 0x0000FFFF, 0xABCDEF01, 0x12345678 };
+		//uint[] key = new uint[] { 0xA56BABCD, 0x0000FFFF, 0xABCDEF01, 0x12345678 };
 		// temp value before obfuscation
 		string userID = "";
 		string passwordTry = "";
@@ -64,7 +64,9 @@ namespace Prototype_V2
 				}
 				else
 				{
-					TinyEncryption encryption = new TinyEncryption(passwordTry, key);
+					uint[] key = TeaUtils.FromString(passwordTry);
+
+					TinyEncryption encryption = new TinyEncryption(userID, key);
 					MessageBox.Show(encryption.Encrypt(), "Encrypted Password");//outputs hashed value
 					if (encryption.Encrypt() == hashedPassword)
 					{
@@ -122,10 +124,11 @@ namespace Prototype_V2
 		private void btn_SignUp_Click(object sender, EventArgs e)
 		{
 			Connection.Open();
-			string testUser = "SuperUser";
+			string testUser = "admin";
 			string testPass = "password";
-			TinyEncryption encr = new TinyEncryption(testPass, key);
-			string hashedPass = encr.Encrypt();
+			uint[] key = TeaUtils.FromString(testPass);
+			uint[] value = TeaUtils.FromString(testUser);
+			uint[] hashedPass = TeaUtils.Encrypt(key, value);
 			string Query = $"INSERT INTO Users VALUES ('{testUser}', '{hashedPass}', 'Admin');";
 			SqlCommand CreateAccount = new SqlCommand(Query,Connection);
 			CreateAccount.ExecuteNonQuery();
