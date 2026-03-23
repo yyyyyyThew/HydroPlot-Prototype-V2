@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,31 +74,53 @@ namespace PrototypeV2
 			IRow FirstRow = sheet.GetRow(0);
 			xtitle = Convert.ToString(FirstRow.GetCell(0));
 			ytitle = Convert.ToString(FirstRow.GetCell(1));
-			if (double.TryParse(xtitle, out double cell1))
-			{
-				xtitle = "Site 1";
-				ytitle = "Site 2";
-				startLine = 0;
-			}
-			else
-			{
-				Console.WriteLine("Header Found");
-			}
 			for (int row = startLine; row <= sheet.LastRowNum; row++)
 			{
 				IRow CurrentRow = sheet.GetRow(row);
 				if (sheet.GetRow(row) == null) //null is when the row only contains empty cells 
 				{
-					Console.WriteLine("Reached end of file 😁");
+					//Console.WriteLine("Reached end of file 😁");
 					break;
 				}
 				else
 				{
-
+					double cell2;
+					double cell1;
 					ICell CurrentCell1 = CurrentRow.GetCell(0);
 					value1 = Convert.ToDouble(CurrentCell1.NumericCellValue);
 					ICell CurrentCell2 = CurrentRow.GetCell(1);
 					value2 = Convert.ToDouble(CurrentCell2.NumericCellValue);
+					if (double.TryParse(value1.ToString(), out cell1) == false && double.TryParse(value2.ToString(), out cell2) == false)
+					{
+						//if both columns are not values, assume it is a header and write the header FIRST; the pair of non-values closest to the bottom becomes the header
+						xtitle = value1.ToString();
+						ytitle = value2.ToString();
+						startLine = 0;
+					}
+					else if (DateTime.TryParse(value1.ToString(), out DateTime date))
+					{
+						//if left column is a date, wait until the last pair of values to write the headers
+						int outdate = 0;
+						foreach (var s in date.ToString())
+						{
+							if (s != '/')
+							{
+								int currentdigit = s - '0';
+								outdate = outdate * 10 + currentdigit;
+							}
+						}
+					}
+					else if (double.TryParse(value1.ToString(), out cell1) == true && double.TryParse(value2.ToString(), out cell2) == true)
+					{
+						//if both columns contain values, keep the current set of headers, unless it is the last value pair, in which case use the defaults
+						
+					}
+					else
+					{
+						//if left column or right column 
+						xtitle = "Date";
+						ytitle = sheet.SheetName;
+					}
 					//Console.WriteLine($"({CurrentCell1}, {CurrentCell2}) ");
 					Coordinate ExcelInput = new Coordinate(x: value1, y: value2);
 					DataOut.Add(ExcelInput);
