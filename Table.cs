@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MathNet.Numerics.Interpolation;
 using NPOI;
 using Prototype_V2;
+using ScottPlot;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace PrototypeV2
@@ -80,8 +81,10 @@ namespace PrototypeV2
 			}
 			else
 			{
-				var LogBestFit = RegressLog(DataIn, "10");
-				return LogBestFit;
+				//var LogBestFit = RegressLog(DataIn, "10");
+				//return LogBestFit;
+				var LinearBestFit = new LinearLine(Gradient, YIntercept);
+				return (LinearBestFit.Equation, rsquared);
 			}
 		}
 		public static string Regress(List<Coordinate> DataIn, string LogBase)
@@ -153,10 +156,20 @@ namespace PrototypeV2
 			//if the data is close enough to linear (r~=0.95) then it creates a LogLine object
 			//else, it throws a fun little warning
 			List<Coordinate> LinearisedData = new List<Coordinate>();
-			for (int items = 0; items < LogData.Count; items++)
+			int i = 0;
+			//for (int items = 0; items <= LogData.Count; items++)
+			foreach (Coordinate item in LogData)
 			{
 				//LinearisedData[items].X = Math.Log10(LogData[items].X);
-				LinearisedData[items].X = Math.Log(LogData[items].X, Base);
+				try
+				{
+					LinearisedData[i].X = Math.Log(item.X, Base);
+					LinearisedData[i].Y = item.Y;
+				}
+				catch (Exception ex)
+				{
+				}
+				i++;
 			}
 			//isLinear = false;
 			return LinearisedData;

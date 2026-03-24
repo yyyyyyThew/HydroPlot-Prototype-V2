@@ -99,7 +99,7 @@ namespace Prototype_V2
 
 		private void GraphView_Load(object sender, EventArgs e)
 		{
-
+		
 		}
 
 		private void btn_Export_Click(object sender, EventArgs e)
@@ -115,7 +115,7 @@ namespace Prototype_V2
 
 					var csv = new StringBuilder();
 					csv.AppendLine($"{xaxis}, {yaxis}");
-	
+
 					for (int i = 0; i < XVars.Length; i++)
 					{
 						csv.AppendLine($"{XVars[i]}, {YVars[i]}");
@@ -130,10 +130,15 @@ namespace Prototype_V2
 				}
 			}
 
-			
+
 		}
 
 		private void SAV_ExportTable_FileOk(object sender, CancelEventArgs e)
+		{
+
+		}
+
+		private void GraphView_Resize(object sender, EventArgs e)
 		{
 
 		}
