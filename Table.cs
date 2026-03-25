@@ -163,7 +163,7 @@ namespace PrototypeV2
 			//Regress(LinearisedData);
 		}
 
-		public static double Variance(List<Coordinate> input)
+		public static double Variance	(List<Coordinate> input)
 		{
 			double x;
 			double sumX = 0;
