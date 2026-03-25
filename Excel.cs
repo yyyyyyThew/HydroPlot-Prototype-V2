@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,42 +66,69 @@ namespace PrototypeV2
 		}
 		public void ReadWorkbook()
 		{
-			double value1;
+			string value1;
 			//string xtitle;
-			double value2;
+			string value2;
 			int startLine = 1;
 			//string ytitle;
-			IRow FirstRow = sheet.GetRow(0);
-			xtitle = Convert.ToString(FirstRow.GetCell(0));
-			ytitle = Convert.ToString(FirstRow.GetCell(1));
-			if (double.TryParse(xtitle, out double cell1))
-			{
-				xtitle = "Site 1";
-				ytitle = "Site 2";
-				startLine = 0;
-			}
-			else
-			{
-				Console.WriteLine("Header Found");
-			}
+			//IRow FirstRow = sheet.GetRow(0);
+			//xtitle = Convert.ToString(FirstRow.GetCell(0));
+			//ytitle = Convert.ToString(FirstRow.GetCell(1));
 			for (int row = startLine; row <= sheet.LastRowNum; row++)
 			{
 				IRow CurrentRow = sheet.GetRow(row);
-				if (sheet.GetRow(row) == null) //null is when the row only contains empty cells 
+				double cell2;
+				double cell1;
+				ICell CurrentCell1 = CurrentRow.GetCell(0);
+				value1 = CurrentCell1.ToString();
+				ICell CurrentCell2 = CurrentRow.GetCell(1);
+				value2 = CurrentCell2.ToString();
+				if (CurrentRow == null)
 				{
-					Console.WriteLine("Reached end of file 😁");
-					break;
+					
 				}
 				else
 				{
-
-					ICell CurrentCell1 = CurrentRow.GetCell(0);
-					value1 = Convert.ToDouble(CurrentCell1.NumericCellValue);
-					ICell CurrentCell2 = CurrentRow.GetCell(1);
-					value2 = Convert.ToDouble(CurrentCell2.NumericCellValue);
+					if (double.TryParse(value1, out cell1) == false && double.TryParse(value2, out cell2) == false)
+					{
+						//if both columns are not values, assume it is a header and write the header FIRST; the pair of non-values closest to the bottom becomes the header
+						xtitle = value1;
+						ytitle = value2;
+						startLine = 0;
+					}
+					else if (DateTime.TryParse(value1.ToString(), out DateTime date) == true && Double.TryParse(value2, out double number))
+					{
+						//if left column is a date, wait until the last pair of values to write the headers
+						int outdate = 0;
+						string shortdate = date.ToShortDateString().ToString();
+						foreach (var s in shortdate)
+						{
+							if (s != '/')
+							{
+								int currentdigit = s - '0';
+								outdate = outdate * 10 + currentdigit;
+							}
+						}
+						//MessageBox.Show(outdate +" "+ value1);
+						xtitle = "Date";
+						ytitle = sheet.SheetName;
+						Coordinate ExcelInput = new Coordinate(x: outdate, y: number);
+						DataOut.Add(ExcelInput);
+					}
+					else if (double.TryParse(value1, out cell1) == true && double.TryParse(value2, out cell2) == true)
+					{
+						//if both columns contain values, keep the current set of headers, unless it is the last value pair, in which case use the defaults
+						Coordinate ExcelInput = new Coordinate(x: cell1, y: cell2);
+						DataOut.Add(ExcelInput);
+					}
+					else
+					{
+						MessageBox.Show(value1 + " " + value2);
+						//if left column or right column 
+						xtitle = "Date";
+						ytitle = sheet.SheetName;
+					}
 					//Console.WriteLine($"({CurrentCell1}, {CurrentCell2}) ");
-					Coordinate ExcelInput = new Coordinate(x: value1, y: value2);
-					DataOut.Add(ExcelInput);
 					LocalColumn = new Table(DataOut, $"Excel Data For {xtitle} and {ytitle}", xtitle, ytitle);
 				}
 			}

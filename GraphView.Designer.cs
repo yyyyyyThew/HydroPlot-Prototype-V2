@@ -38,6 +38,7 @@
 			// 
 			// GV_FullscreenView
 			// 
+			GV_FullscreenView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			GV_FullscreenView.DisplayScale = 1.5F;
 			GV_FullscreenView.Location = new Point(12, 52);
 			GV_FullscreenView.Name = "GV_FullscreenView";
@@ -95,6 +96,7 @@
 			Name = "GraphView";
 			Text = "GraphView";
 			Load += GraphView_Load;
+			Resize += GraphView_Resize;
 			ResumeLayout(false);
 		}
 
