@@ -66,6 +66,7 @@ namespace PrototypeV2
 		}
 		public void ReadWorkbook()
 		{
+			bool FirstDate = true;
 			string value1;
 			//string xtitle;
 			string value2;
@@ -76,19 +77,22 @@ namespace PrototypeV2
 			//ytitle = Convert.ToString(FirstRow.GetCell(1));
 			for (int row = startLine; row <= sheet.LastRowNum; row++)
 			{
+				TimeSpan days;
+				DateTime firstdate = DateTime.MinValue;
 				IRow CurrentRow = sheet.GetRow(row);
 				double cell2;
 				double cell1;
 				ICell CurrentCell1 = CurrentRow.GetCell(0);
-				value1 = CurrentCell1.ToString();
 				ICell CurrentCell2 = CurrentRow.GetCell(1);
-				value2 = CurrentCell2.ToString();
-				if (CurrentRow == null)
+				
+				if (CurrentCell1 == null || CurrentCell2 == null)
 				{
-					
+					//skip
 				}
 				else
 				{
+					value1 = CurrentCell1.ToString();
+					value2 = CurrentCell2.ToString();
 					if (double.TryParse(value1, out cell1) == false && double.TryParse(value2, out cell2) == false)
 					{
 						//if both columns are not values, assume it is a header and write the header FIRST; the pair of non-values closest to the bottom becomes the header
@@ -98,21 +102,32 @@ namespace PrototypeV2
 					}
 					else if (DateTime.TryParse(value1.ToString(), out DateTime date) == true && Double.TryParse(value2, out double number))
 					{
-						//if left column is a date, wait until the last pair of values to write the headers
-						int outdate = 0;
-						string shortdate = date.ToShortDateString().ToString();
-						foreach (var s in shortdate)
+						if (FirstDate == false)
 						{
-							if (s != '/')
-							{
-								int currentdigit = s - '0';
-								outdate = outdate * 10 + currentdigit;
-							}
+							days = TimeSpan.Zero;
+							firstdate = date;
+							FirstDate = true;
+							//MessageBox.Show(date.ToString() + ", " + firstdate.ToString());
 						}
+						else
+						{
+							days = date - firstdate;
+						}
+						//if left column is a date, wait until the last pair of values to write the headers
+						//int outdate = 0;
+						//string shortdate = date.ToShortDateString().ToString();
+						//foreach (var s in shortdate)
+						//{
+						//	if (s != '/')
+						//	{
+						//		int currentdigit = s - '0';
+						//		outdate = outdate * 10 + currentdigit;
+						//	}
+						//}
 						//MessageBox.Show(outdate +" "+ value1);
 						xtitle = "Date";
 						ytitle = sheet.SheetName;
-						Coordinate ExcelInput = new Coordinate(x: outdate, y: number);
+						Coordinate ExcelInput = new Coordinate(x: days.Days, y: number);
 						DataOut.Add(ExcelInput);
 					}
 					else if (double.TryParse(value1, out cell1) == true && double.TryParse(value2, out cell2) == true)
