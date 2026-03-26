@@ -67,6 +67,8 @@ namespace PrototypeV2
 		public void ReadWorkbook()
 		{
 			string value1;
+			TimeSpan DayNumber = TimeSpan.Zero;
+			DateTime StartDate = DateTime.MinValue;
 			//string xtitle;
 			string value2;
 			int startLine = 1;
@@ -89,37 +91,35 @@ namespace PrototypeV2
 				}
 				else
 				{
-					if (double.TryParse(value1, out cell1) == false && double.TryParse(value2, out cell2) == false)
+
+					
+					if (double.TryParse(value1, out cell1) == true && double.TryParse(value2, out cell2) == true )
+					{
+						//if both columns contain values, keep the current set of headers, unless it is the last value pair, in which case use the defaults
+						Coordinate ExcelInput = new Coordinate(x: cell1, y: cell2);
+						DataOut.Add(ExcelInput);
+					}
+					else if (DateTime.TryParse(value1.ToString(), out DateTime date) == true && Double.TryParse(value2, out double number))
+					{
+						if (StartDate == DateTime.MinValue)
+						{
+							StartDate = date;
+						}
+						//if left column is a date, wait until the last pair of values to write the headers
+						DayNumber = date - StartDate;
+						//MessageBox.Show(outdate +" "+ value1);
+						xtitle = "Days";
+						ytitle = sheet.SheetName;
+						Coordinate ExcelInput = new Coordinate(x: DayNumber.Days, y: number);
+						DataOut.Add(ExcelInput);
+						DayNumber = TimeSpan.Zero;
+					}
+					else if (double.TryParse(value1, out cell1) == false && double.TryParse(value2, out cell2) == false)
 					{
 						//if both columns are not values, assume it is a header and write the header FIRST; the pair of non-values closest to the bottom becomes the header
 						xtitle = value1;
 						ytitle = value2;
 						startLine = 0;
-					}
-					else if (DateTime.TryParse(value1.ToString(), out DateTime date) == true && Double.TryParse(value2, out double number))
-					{
-						//if left column is a date, wait until the last pair of values to write the headers
-						int outdate = 0;
-						string shortdate = date.ToShortDateString().ToString();
-						foreach (var s in shortdate)
-						{
-							if (s != '/')
-							{
-								int currentdigit = s - '0';
-								outdate = outdate * 10 + currentdigit;
-							}
-						}
-						//MessageBox.Show(outdate +" "+ value1);
-						xtitle = "Date";
-						ytitle = sheet.SheetName;
-						Coordinate ExcelInput = new Coordinate(x: outdate, y: number);
-						DataOut.Add(ExcelInput);
-					}
-					else if (double.TryParse(value1, out cell1) == true && double.TryParse(value2, out cell2) == true)
-					{
-						//if both columns contain values, keep the current set of headers, unless it is the last value pair, in which case use the defaults
-						Coordinate ExcelInput = new Coordinate(x: cell1, y: cell2);
-						DataOut.Add(ExcelInput);
 					}
 					else
 					{
