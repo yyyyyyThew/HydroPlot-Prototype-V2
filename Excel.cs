@@ -82,17 +82,16 @@ namespace PrototypeV2
 				double cell2;
 				double cell1;
 				ICell CurrentCell1 = CurrentRow.GetCell(0);
-				value1 = CurrentCell1.ToString();
 				ICell CurrentCell2 = CurrentRow.GetCell(1);
-				value2 = CurrentCell2.ToString();
-				if (CurrentRow == null)
+				if (CurrentCell1 == null || CurrentCell2 == null)
 				{
 					
 				}
 				else
 				{
+					value1 = CurrentCell1.ToString();
+					value2 = CurrentCell2.ToString();
 
-					
 					if (double.TryParse(value1, out cell1) == true && double.TryParse(value2, out cell2) == true )
 					{
 						//if both columns contain values, keep the current set of headers, unless it is the last value pair, in which case use the defaults

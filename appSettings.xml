@@ -20,7 +20,8 @@
 		<add key="Database_Enabled" value="False"/>
 	</appConfig>
 	<connectionString>
-		<add key="SG20" value="Server=A240392\SQLEXPRESS;TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB"/>
+		<add key="SG20" value="data source=A240392\SQLEXPRESS;Integrated Security=SSPI;persist security info=True;TrustServerCertificate=True;"/>
+		<add key="SG201" value="Server=A240392\SQLEXPRESS;TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;Integrated Security=SSPI"/>
 		<add key="Home" value="Data Source=(localdb)\testDB;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False"/>
 	</connectionString>
 </settings>

@@ -118,43 +118,36 @@ namespace PrototypeV2
 		}
 		static private SqlConnection Connect(string path)
 		{
+			SqlConnection myConn = new SqlConnection(path);
 			try
 			{
-				// $@"Server={path};TrustServerCertificate=True;Trusted_Connection=True;Initial Catalog=SystemTrackerDB;"
-				SqlConnection myConn = new SqlConnection(path);
 				myConn.Open();
-				MessageBox.Show("Database Connnection Established");
+			}
+
+			catch (Exception finalex)
+			{
+				MessageBox.Show(finalex.Message);
+			}
+			try
+			{
+				var createDB = myConn.CreateCommand();
+				createDB.CommandText = "IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'MyTestDataBase') BEGIN CREATE DATABASE [SystemTrackerDB]; END;";
+				var UseDB = myConn.CreateCommand();
+				UseDB.CommandText = "USE [SystemTrackerDB]";
+				var RunDDL = myConn.CreateCommand();
+				RunDDL.CommandText = File.ReadAllText("createDB.sql");
+
+
+				createDB.ExecuteNonQuery();
+				UseDB.ExecuteNonQuery();
+				RunDDL.ExecuteNonQuery();
+				myConn.Open();
 				myConn.Close();
 				return myConn;
-
 			}
-			catch (SqlException ex)
+			catch (Exception ex)
 			{
-				try
-				{
-					SqlConnection myConn = new SqlConnection(path);
-					myConn.Open();
-					var createDB = myConn.CreateCommand();
-					createDB.CommandText = "CREATE DATABASE [SystemTrackerDB]";
-					createDB.ExecuteNonQuery();
-					var UseDB = myConn.CreateCommand();
-					UseDB.CommandText = "USE [SystemTrackerDB]";
-					UseDB.ExecuteNonQuery();
-					var RunDDL = myConn.CreateCommand();
-					RunDDL.CommandText = File.ReadAllText("createDB.sql");
-					RunDDL.ExecuteNonQuery();
-
-					createDB.ExecuteNonQuery();
-					UseDB.ExecuteNonQuery();
-					RunDDL.ExecuteNonQuery();
-					return myConn;
-				}
-
-				catch (Exception finalex)
-				{
-					MessageBox.Show(finalex.Message);
-					return null;
-				}
+				return null;
 			}
 		}
 		private void pictureBox1_Click(object sender, EventArgs e)

@@ -143,9 +143,7 @@ namespace Prototype_V2
 		//	Connection.Close();
 		//}
 		private void btn_SignUp_Click(object sender, EventArgs e)
-
 		{
-			Connection.Open();
 			string testUser = "admin";
 			string testPassword = "password";
 			uint[] Salt = TeaUtils.GenerateSalt();
@@ -153,15 +151,24 @@ namespace Prototype_V2
 			uint[] Value = TeaUtils.FromString(testUser);
 			string salt = TeaUtils.ToString(Salt);
 			string hashedPass = TeaUtils.ToString(TeaUtils.Encrypt(Key, Value));
-			string Query = $"INSERT INTO Users VALUES ('{testUser}', '{hashedPass}', '{salt}', 'Admin');";
-			SqlCommand CreateAccount = new SqlCommand(Query, Connection);
-			CreateAccount.ExecuteNonQuery();
-			string testDevice = Environment.MachineName.ToString();
-			Query = $"INSERT INTO Devices (device_name) VALUES ('{testDevice}')";
-			SqlCommand CreateDevice = new SqlCommand(Query, Connection);
-			CreateDevice.ExecuteNonQuery();
-			SqlCommand com = new SqlCommand("", Connection);
-			Connection.Close();
+			MessageBox.Show(TeaUtils.Encrypt(Key, Value)[0].ToString() + TeaUtils.Encrypt(Key, Value)[1].ToString() + ", " + TeaUtils.ToString(Salt).ToString());
+			if (Connection != null)
+			{
+				if (Connection.State != ConnectionState.Open)
+				{
+					Connection.Open();
+				}
+				
+				string Query = $"INSERT INTO Users VALUES ('{testUser}', '{hashedPass}', '{salt}', 'Admin');";
+				SqlCommand CreateAccount = new SqlCommand(Query, Connection);
+				CreateAccount.ExecuteNonQuery();
+				string testDevice = Environment.MachineName.ToString();
+				Query = $"INSERT INTO Devices (device_name) VALUES ('{testDevice}')";
+				SqlCommand CreateDevice = new SqlCommand(Query, Connection);
+				CreateDevice.ExecuteNonQuery();
+				SqlCommand com = new SqlCommand("", Connection);
+				Connection.Close();
+			}
 		}
 
 		private void btnOpenSettings_Click(object sender, EventArgs e)
